@@ -1,5 +1,9 @@
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { Routes, Route, Link, useLocation } from "react-router-dom";
+import { BiSolidMessageAltEdit } from "react-icons/bi";
+import TargetCursor from "./components/TargetCursor.jsx";
+
 import "./App.css";
 import Home from "./pages/home.jsx";
 import MySpace from "./pages/Myspace.jsx";
@@ -7,79 +11,79 @@ import UXGraphic from "./pages/ux.jsx";
 import Soft from "./pages/soft.jsx";
 import logo from "./assets/logo.svg";
 import logoRed from "./assets/logored.svg";
+import cursorSvg from "./assets/cursor.svg";
+import Resume from "./pages/Resume.jsx";
+import CustomCursor from "./components/CustomCursor.jsx";
 
 function App() {
-  const [menuItem, setMenuItem] = useState("Home");
-  const [currentLogo, setCurrentLogo] = useState(logo);
+  const location = useLocation();
+  const [menuItem, setMenuItem] = useState("");
 
   useEffect(() => {
     document.title = "Portfolio";
   }, []);
 
-  const renderComponent = () => {
-    switch (menuItem) {
-      case "Home":
-        return <Home key="home" />;
-      case "MySpace":
-        return <MySpace key="myspace" />;
-      case "UX":
-        return <UXGraphic key="ux" />;
-      case "Soft":
-        return <Soft key="soft" />;
-      default:
-        return <Home key="home" />;
-    }
-  };
+  useEffect(() => {
+    document.body.style.cursor = `url(${cursorSvg}) 10 10, auto`;
+  }, []);
 
   return (
-    <div className="w-full min-h-screen flex flex-col bg-[#080808] font-sans relative overflow-y-auto">
-      {/* Navigation */}
-      <div className="w-full flex items-center justify-center gap-6 p-4 text-white fixed top-0 z-50 bg-black/90 backdrop-blur-lg hover:bg-black/80 transition-colors duration-300 custom-border">
-        {/* Logo */}
-        {/* <img
-          className="max-w-10 cursor-pointer"
-          src={currentLogo}
-          alt="Logo"
-          onMouseEnter={() => setCurrentLogo(logoRed)}
-          onMouseLeave={() => setCurrentLogo(logo)}
-          onClick={() => setMenuItem("Home")}
-        /> */}
-        <div className="flex items-center gap-6 text-sm md:text-base tracking-widest">
-          {["Home", "Soft", "UX", "MySpace"].map((item) => (
-            <p
-              key={item}
-              onClick={() => setMenuItem(item)}
-              className={`cursor-pointer transition-colors duration-300 ${
-                menuItem === item
-                  ? "text-white drop-shadow-[0_0_4px_rgba(255,255,255,1)] hover:border-b-1 hover:drop-shadow-sm hover:border-red-600 hover:text-red-600"
-                  : "text-white border-transparent border-b-1 hover:border-red-600 hover:text-red-600"
-              }`}
-            >
-              {item === "Soft"
-                ? "Projects"
-                : item === "UX"
-                ? "UX & Graphic"
-                : item}
-            </p>
-          ))}
+    <>
+      {/* <CustomCursor /> */}
+      <TargetCursor spinDuration={2} hideDefaultCursor={true} />
+
+      <div className="flex flex-col hover:">
+        <div className="w-full min-h-screen flex flex-col bg-[#080808] font-sans relative">
+          {/* Navigation */}
+          <header
+            id="navbar"
+            className="w-full flex items-center justify-center gap-6 p-4 text-white sticky top-0 z-50 bg-black/85 backdrop-blur-lg hover:bg-black/90 transition-colors duration-300 custom-border"
+          >
+            {/* <img src={logo} className="w-10 h-10" alt="Logo" /> */}
+            <div className="flex items-center gap-6 text-sm md:text-base tracking-widest">
+              <Link to="/" className="hover:text-red-500">
+                Home
+              </Link>
+              {}
+              <Link to="/projects" className="hover:text-red-500">
+                Projects
+              </Link>
+              <Link to="/uxgraphic" className="hover:text-red-500">
+                UX & Graphic
+              </Link>
+              <Link to="/myspace" className="hover:text-red-500">
+                MySpace
+              </Link>
+              <Link to="/resume" className="hover:text-red-500">
+                Resume
+              </Link>
+            </div>
+          </header>
+
+          {/* Main Content with Page Transition */}
+          <main className="flex-1 bg-black  scrollbar-hide">
+            {/* 👆 `mt-[72px]` = height of navbar (auto spacing instead of padding everywhere) */}
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={location.pathname}
+                initial={{ opacity: 0, x: 50 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: -50 }}
+                transition={{ duration: 0.4 }}
+              >
+                <Routes location={location} key={location.pathname}>
+                  <Route path="/" element={<Home />} />
+                  <Route path="/projects" element={<Soft />} />
+                  <Route path="/uxgraphic" element={<UXGraphic />} />
+                  <Route path="/myspace" element={<MySpace />} />
+                  <Route path="/resume" element={<Resume />} />
+                </Routes>
+              </motion.div>
+            </AnimatePresence>
+          </main>
         </div>
       </div>
-
-      {/* Main Content with Page Transition */}
-      <div className="pt-20 flex-1 bg-black overflow-y-auto scrollbar-hide">
-        <AnimatePresence exitBeforeEnter>
-          <motion.div
-            key={menuItem} // important for Framer Motion
-            initial={{ opacity: 0, x: 50 }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: -50 }}
-            transition={{ duration: 0.4 }}
-          >
-            {renderComponent()}
-          </motion.div>
-        </AnimatePresence>
-      </div>
-    </div>
+    </>
   );
 }
 

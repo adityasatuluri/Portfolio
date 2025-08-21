@@ -15,16 +15,23 @@
   font-style: normal;
 }
 
+.jura-light {
+  font-family: "Jura", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 300;
+  font-style: light;
+}
+
 ::-moz-selection {
   /* Code for Firefox */
   color: black;
-  background: white;
+  background: #e1e1e1;
   fontfamily: "poppins, sans-serif";
 }
 
 ::selection {
   color: black;
-  background: white;
+  background: #e1e1e1;
   font-weight: bold;
 }
 
@@ -68,3 +75,61 @@
     rgba(255, 0, 0, 0) 85%
   );
 }
+
+.grain {
+  position: relative;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  overflow: hidden;
+}
+
+.grain::after {
+  content: "";
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background-image: url("https://upload.wikimedia.org/wikipedia/commons/7/76/1k_Dissolve_Noise_Texture.png");
+  opacity: 0.05; /* slightly lighter */
+  animation: animateGrain 8s steps(10) infinite;
+  pointer-events: none;
+  z-index: 0; /* 👈 pushes noise behind content */
+}
+
+@keyframes animateGrain {
+  0%,
+  100% {
+    transform: translate(0, 0);
+  }
+  10% {
+    transform: translate(-5%, -10%);
+  }
+  20% {
+    transform: translate(-15%, -20%);
+  }
+  30% {
+    transform: translate(-5%, -10%);
+  }
+  40% {
+    transform: translate(-15%, -20%);
+  }
+  50% {
+    transform: translate(-5%, -10%);
+  }
+  60% {
+    transform: translate(-15%, -20%);
+  }
+  70% {
+    transform: translate(-5%, -10%);
+  }
+  80% {
+    transform: translate(-15%, -20%);
+  }
+  90% {
+    transform: translate(-5%, -10%);
+  }
+}
+
+

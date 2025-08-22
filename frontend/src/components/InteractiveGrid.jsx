@@ -53,15 +53,21 @@ export default function InteractiveGrid() {
         const mouseY = mouse.y - (rect?.top ?? 0);
 
         const dist = Math.hypot(mouseX - x, mouseY - y);
-        const maxDist = 180;
+        const maxDist = 500;
         const scale = Math.max(1, 5 - Math.min(dist, maxDist) / 40); // Scale effect
-        const opacity = Math.max(0, 1 - dist / 400); // Opacity falloff
+        const opacity = Math.max(0.2, 1 - dist / 400); // Opacity falloff
 
         return (
           <motion.div
             key={i}
             className="rounded-full bg-red-600"
-            style={{ width: baseSize, height: baseSize, position: "absolute", left: x - baseSize / 2, top: y - baseSize / 2 }}
+            style={{
+              width: baseSize,
+              height: baseSize,
+              position: "absolute",
+              left: x - baseSize / 2,
+              top: y - baseSize / 2,
+            }}
             animate={{ scale, opacity }}
             transition={{ duration: 0.2, ease: "easeOut" }}
           />

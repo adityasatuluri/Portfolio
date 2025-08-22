@@ -3,7 +3,7 @@ import ReactLogo from "../assets/logos/react.png";
 
 const SkillButton = () => {
   return (
-    <div className="relative h-20 w-64 flex items-center justify-center gap-4 rounded-2xl overflow-hidden border border-neutral-800 bg-[#070707] group">
+    <div className="relative h-20 w-64 flex items-center justify-center gap-4 rounded-2xl  border border-neutral-800 bg-[#070707] group">
       {/* Animated gradient overlay */}
       <div className="absolute inset-0">
         <div className="w-[200%] h-[200%] bg-gradient-to-r from-[#00ffcc] via-transparent to-[#00ffcc] opacity-70 animate-glowMove" />

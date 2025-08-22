@@ -1,6 +1,7 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState, useRef, useMemo } from "react";
 import { Routes, Route, Link, useLocation } from "react-router-dom";
 import BlurText from "../components/Blurtext.jsx";
+
 import ShinyText from "../components/Shinytext.jsx";
 import TrueFocus from "../components/TrueFocus.jsx";
 import GridDistortion from "../components/GridDistortion.jsx";
@@ -8,7 +9,8 @@ import LetterGlitch from "../components/LetterGlitch.jsx";
 import { IoIosArrowDown } from "react-icons/io";
 import "../App.css";
 import InteractiveGrid from "../components/InteractiveGrid.jsx";
-import Inspiration from "../assets/cy-yt.png";
+import Inspiration from "../assets/cy-bw.png";
+import HeroBg from "../assets/hero.jpeg";
 import { MdArrowOutward } from "react-icons/md";
 import Footer from "../components/Footer.jsx";
 import Filler from "../assets/Home_Filler.svg";
@@ -26,6 +28,9 @@ import morning from "../assets/cy-city-morning.png";
 import afternoon from "../assets/cy-city-afternoon.png";
 import evening from "../assets/cy-city-night.png";
 import night from "../assets/cy-city.png";
+import GridMotion from "../components/GridMotion.jsx";
+import FaultyTerminal from "../components/FaultyTerminal.jsx";
+import DotGrid from "../components/DotGrid.jsx";
 
 export default function Home() {
   const [pos, setPos] = useState({ x: 0, y: 0 });
@@ -90,6 +95,26 @@ export default function Home() {
     },
   ];
 
+  const modules = import.meta.glob("../assets/artworks/*.{png,jpg,jpeg,svg}", {
+    eager: true,
+  });
+
+  // Extract paths
+  const artworks = Object.values(modules).map((mod) => mod.default);
+
+  const items = useMemo(() => {
+    const shuffleArray = (arr) => {
+      const copy = [...arr];
+      for (let i = copy.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [copy[i], copy[j]] = [copy[j], copy[i]];
+      }
+      return copy;
+    };
+
+    return shuffleArray(artworks);
+  }, []);
+
   const categoryRefs = useRef([]);
   const skillsTitleRef = useRef(null);
   const [currentCategory, setCurrentCategory] = React.useState("");
@@ -115,12 +140,13 @@ export default function Home() {
   // ];
 
   // Create an array of divs for featured work
+
   const divs = [];
   for (let i = 0; i < 5; i++) {
     divs.push(
       <div
         key={i}
-        className="h-[75vh] border-1 border-neutral-800 rounded-2xl cursor-target overflow-hidden transition-all duration-300 ease-in-out hover:rounded-none"
+        className="h-[75vh] border-1 border-neutral-800 rounded-2xl cursor-target transition-all duration-300 ease-in-out hover:rounded-none"
       >
         <div
           className="relative flex items-center justify-center h-8/10 border-0 rounded-t-2xl transition-all duration-300 ease-in-out"
@@ -182,6 +208,7 @@ export default function Home() {
     return () => window.removeEventListener("resize", checkMobile);
   }, []);
 
+  /* De comment if using interactive grid */
   useEffect(() => {
     const move = (e) => setPos({ x: e.clientX, y: e.clientY });
     window.addEventListener("mousemove", move);
@@ -192,15 +219,64 @@ export default function Home() {
     <div className="w-full bg-[#030303] relative">
       {/* Hero Section */}
       <div
-        className="relative flex flex-col items-center justify-center text-center overflow-hidden cursor-none grain pt-25"
-        style={{ height: "100vh", backgroundImage: `url(${RedBgRev})` }}
+        className="relative flex flex-col items-center justify-center text-center grain cursor-none"
+        style={{ height: "100vh" }}
       >
         {/* ✅ Show InteractiveGrid only on desktop */}
-        {!isMobile && <InteractiveGrid />}
+        {!isMobile && (
+          <div
+            className="absolute inset-0 z-0"
+            style={{
+              backgroundImage: `url(${RedBgRev})`,
+              backgroundSize: "cover",
+              backgroundPosition: "center",
+            }}
+          >
+            {/* <FaultyTerminal
+              scale={3}
+              gridMul={[2, 1]}
+              digitSize={2}
+              timeScale={1}
+              pause={false}
+              scanlineIntensity={1}
+              glitchAmount={1}
+              flickerAmount={1}
+              noiseAmp={1}
+              chromaticAberration={0}
+              dither={0}
+              curvature={0.3}
+              tint="#660007"
+              mouseReact={true}
+              mouseStrength={0.5}
+              pageLoadAnimation={false}
+              brightness={1}
+            /> */}
+            <InteractiveGrid />
+            {/* <DotGrid
+              dotSize={10}
+              gap={15}
+              baseColor="transparent"
+              activeColor="#ff0000"
+              proximity={120}
+              shockRadius={250}
+              shockStrength={5}
+              resistance={750}
+              returnDuration={1.5}
+            /> */}
+            {/* <GridDistortion
+              imageSrc={HeroBg}
+              grid={10}
+              mouse={0.1}
+              strength={0.15}
+              relaxation={0.9}
+              className="custom-class"
+            /> */}
+          </div>
+        )}
 
         <div className="gap-4" style={{ gap: "2px" }}>
           <h1
-            className="relative z-10 m-0 text-[#f0f0f0] jura-font font-bold leading-tight text-[8vh] sm:text-[15vh] md:text-[20vh] lg:text-[25vh]"
+            className="relative z-10 m-0 text-[#f0f0f0] font-sans orbitron-f font-bold leading-tight text-[8vh] sm:text-[15vh] md:text-[20vh] lg:text-[25vh]"
             // onMouseEnter={() => setHovering(true)}
             // onMouseLeave={() => setHovering(false)}
           >
@@ -236,7 +312,7 @@ export default function Home() {
           {" "}
           <BlurText
             text="I build digital experiences where design meets code and AI adds intelligence."
-            delay={150}
+            delay={50}
             animateBy="words"
             direction="top"
             className="text-2xl mb-8 text-white"
@@ -254,9 +330,15 @@ export default function Home() {
                   to="/projects"
                   className="flex flex-row gap-2 items-end text-white hover:text-red-600 transition-colors duration-300 text-2xl"
                 >
-                  <span className="flex flex-row items-end cursor-target hover:border-b pb-1">
-                    VIEW ALL
-                  </span>
+                  {/* <span className="flex flex-row items-end cursor-target hover:border-b pb-1">
+                    
+                  </span> */}
+                  <ShinyText
+                    text="VIEW ALL"
+                    disabled={false}
+                    speed={3}
+                    className="flex flex-row items-end cursor-target hover:border-b pb-1"
+                  />
                 </Link>
               </span>
             </div>
@@ -274,7 +356,7 @@ export default function Home() {
         {/* Filler Image Night City*/}
         <div
           ref={cityRef}
-          className="w-full h-[100vh] flex items-center mb-30 justify-center text-[#f0f0f0] text-2xl font-normal pb-6 grain transition-all duration-700"
+          className="w-full h-[100vh] flex items-center mb-30 justify-center text-[#f0f0f0] text-2xl font-normal pb-6 grain transition-all duration-1000"
           style={{
             backgroundImage: `url(${cityBg})`,
             backgroundSize: "cover",
@@ -324,13 +406,13 @@ export default function Home() {
           </div>
         </div>
 
-        {/* EXPERIENCE Section */}
+        {/* EXPERIENCE Section  SET GROUP HOVERED ON {divs} */}
         <div className="w-full h-full flex flex-row justify-between pt-30 pb-30 pr-10 pl-10 gap-10 text-2xl jura-font cursor-crosshair bg-[#030303] text-[#f0f0f0]">
           <div className="">
             <div className="text-7xl w-[30vw] sticky top-20">EXPERIENCE</div>
-            <div className="text-3xl w-[30vw] sticky top-40 font-normal text-neutral-600">
+            {/* <div className="text-3xl w-[30vw] sticky top-45 font-normal text-neutral-600">
               {currentSkills}
-            </div>
+            </div> */}
           </div>
           <div className="w-[80vw] pl-10 space-y-10">
             {experience.map((exp, index) => (
@@ -360,14 +442,15 @@ export default function Home() {
         </div>
 
         {/* Filler Image*/}
-        <div className="w-full h-[90vh] flex items-center justify-center text-[#f0f0f0] text-2xl font-bold pb-6">
+        {/* <div className="w-full h-[90vh] flex items-center justify-center text-[#f0f0f0] text-2xl font-bold pb-6">
           <img
             className="w-full h-full object-cover grain"
             src={Filler}
             alt="Filler"
             style={{ objectFit: "cover", objectPosition: "center" }}
           />
-        </div>
+        </div> */}
+        {/* <GridMotion items={items} /> */}
 
         {/* Contact Section */}
         <div className="w-full h-[80vh]  mt-20 mb-30 flex items-center justify-between text-[#f0f0f0] text-xl font-bold pr-10">

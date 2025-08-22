@@ -12,7 +12,7 @@ export default function Footer() {
         backgroundImage: `url(${RedBg})`,
       }}
     >
-      <div className="relative flex flex-col items-center justify-center text-center overflow-hidden grain w-full h-[90vh]">
+      <div className="relative flex flex-col items-center justify-center text-center  grain w-full h-[90vh]">
         {/* Image in background */}
         <img
           src={LogoBg}

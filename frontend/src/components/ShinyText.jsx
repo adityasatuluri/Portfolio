@@ -12,7 +12,10 @@ const ShinyText = ({ text, disabled = false, speed = 5, className = "" }) => {
         backgroundSize: "200% 100%",
         WebkitBackgroundClip: "text",
         color: "transparent",
-        animation: disabled ? "none" : `shine ${animationDuration} linear infinite`,
+        textShadow: "0 0 1px #b5b5b5a4",
+        animation: disabled
+          ? "none"
+          : `shine ${animationDuration} linear infinite`,
       }}
     >
       {text}

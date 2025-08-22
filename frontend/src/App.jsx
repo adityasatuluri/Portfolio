@@ -5,9 +5,9 @@ import { BiSolidMessageAltEdit } from "react-icons/bi";
 import TargetCursor from "./components/TargetCursor.jsx";
 
 import "./App.css";
-import Home from "./pages/home.jsx";
+import Home from "./pages/Home.jsx";
 import MySpace from "./pages/Myspace.jsx";
-import UXGraphic from "./pages/ux.jsx";
+import Artworks from "./pages/Artworks.jsx";
 import Soft from "./pages/soft.jsx";
 import logo from "./assets/logo.svg";
 import logoRed from "./assets/logored.svg";
@@ -20,7 +20,7 @@ function App() {
   const [menuItem, setMenuItem] = useState("");
 
   useEffect(() => {
-    document.title = "Portfolio";
+    document.title = "Aditya Satuluri";
   }, []);
 
   useEffect(() => {
@@ -32,29 +32,29 @@ function App() {
       {/* <CustomCursor /> */}
       <TargetCursor spinDuration={2} hideDefaultCursor={true} />
 
-      <div className="flex flex-col hover:">
+      <div className="flex flex-col">
         <div className="w-full min-h-screen flex flex-col bg-[#080808] font-sans relative">
           {/* Navigation */}
           <header
             id="navbar"
-            className="w-full flex items-center justify-center gap-6 p-4 text-white sticky top-0 z-50 bg-black/85 backdrop-blur-lg hover:bg-black/90 transition-colors duration-300 custom-border"
+            className="w-full flex items-center justify-center gap-6 p-4 text-white fixed top-0 z-50 bg-black/85 backdrop-blur-lg hover:bg-black/90 transition-colors duration-300 custom-border"
           >
             {/* <img src={logo} className="w-10 h-10" alt="Logo" /> */}
             <div className="flex items-center gap-6 text-sm md:text-base tracking-widest">
-              <Link to="/" className="hover:text-red-500">
+              <Link to="/" className="hover:text-red-500 cursor-target">
                 Home
               </Link>
               {}
-              <Link to="/projects" className="hover:text-red-500">
+              <Link to="/projects" className="hover:text-red-500 cursor-target">
                 Projects
               </Link>
-              <Link to="/uxgraphic" className="hover:text-red-500">
-                UX & Graphic
+              <Link to="/artworks" className="hover:text-red-500 cursor-target">
+                Artworks
               </Link>
-              <Link to="/myspace" className="hover:text-red-500">
+              <Link to="/myspace" className="hover:text-red-500 cursor-target">
                 MySpace
               </Link>
-              <Link to="/resume" className="hover:text-red-500">
+              <Link to="/resume" className="hover:text-red-500 cursor-target">
                 Resume
               </Link>
             </div>
@@ -74,7 +74,7 @@ function App() {
                 <Routes location={location} key={location.pathname}>
                   <Route path="/" element={<Home />} />
                   <Route path="/projects" element={<Soft />} />
-                  <Route path="/uxgraphic" element={<UXGraphic />} />
+                  <Route path="/artworks" element={<Artworks />} />
                   <Route path="/myspace" element={<MySpace />} />
                   <Route path="/resume" element={<Resume />} />
                 </Routes>

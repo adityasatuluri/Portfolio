@@ -1,7 +1,10 @@
 import React, { useEffect, useState, useRef } from "react";
+import { Routes, Route, Link, useLocation } from "react-router-dom";
 import BlurText from "../components/Blurtext.jsx";
 import ShinyText from "../components/Shinytext.jsx";
 import TrueFocus from "../components/TrueFocus.jsx";
+import GridDistortion from "../components/GridDistortion.jsx";
+import LetterGlitch from "../components/LetterGlitch.jsx";
 import { IoIosArrowDown } from "react-icons/io";
 import "../App.css";
 import InteractiveGrid from "../components/InteractiveGrid.jsx";
@@ -19,11 +22,18 @@ import { Timeline } from "../components/Timeline";
 import SkillTree from "../components/SkillTree.jsx"; // Import SkillTree component
 import SkillsTab from "../components/SkillsTab.jsx"; // Import SkillsTab component
 import SkillButton from "../components/SkillButton.jsx";
+import morning from "../assets/cy-city-morning.png";
+import afternoon from "../assets/cy-city-afternoon.png";
+import evening from "../assets/cy-city-night.png";
+import night from "../assets/cy-city.png";
 
 export default function Home() {
   const [pos, setPos] = useState({ x: 0, y: 0 });
   const [hovering, setHovering] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
+  const [hoveredIndex, setHoveredIndex] = useState();
+  const [cityBg, setCityBg] = useState(night);
+  const cityRef = useRef(null);
 
   const categories = {
     "Programming Languages": ["HTML", "CSS", "JavaScript", "Python", "Java"],
@@ -110,18 +120,29 @@ export default function Home() {
     divs.push(
       <div
         key={i}
-        className="h-[75vh]  border-1 border-neutral-800 rounded-2xl cursor-target"
+        className="h-[75vh] border-1 border-neutral-800 rounded-2xl cursor-target overflow-hidden transition-all duration-300 ease-in-out hover:rounded-none"
       >
         <div
-          className="flex items-center justify-center h-8/10  border-0 rounded-t-2xl "
+          className="relative flex items-center justify-center h-8/10 border-0 rounded-t-2xl transition-all duration-300 ease-in-out"
           style={{ backgroundImage: `url(${Mockup})`, backgroundSize: "cover" }}
+          onMouseEnter={() => setHoveredIndex(i)}
+          onMouseLeave={() => setHoveredIndex(null)}
         >
-          {i + 1}
+          {/* overlay always rendered, opacity animated */}
+
+          <div
+            className={`flex w-full h-full bg-[#f0f0f0]/50 text-[#010101] transition-opacity duration-300 backdrop-blur-md items-center justify-center ${
+              hoveredIndex === i ? "opacity-100" : "opacity-0"
+            }`}
+          >
+            UI design for a EV charging station finder app
+          </div>
         </div>
-        <div className="flex flex-row items-center justify-between pr-6 pl-6 bg-[#0c0c0c] h-2/10 rounded-b-2xl">
+
+        <div className="flex flex-row items-center justify-between pr-6 pl-6 bg-[#0c0c0c] h-2/10 rounded-b-2xl transition-all duration-300 ease-in-out hover:rounded-none">
           <div className="flex flex-col items-start justify-center">
             <div className="text-[#f1f1f1] text-xl">ELECTRIFIND</div>
-            <div className="text-[#8c8c8c] text-lg ">UI/UX Design</div>
+            <div className="text-[#8c8c8c] text-lg">UI/UX Design</div>
           </div>
           <div className="border-1 border-[#454545] p-1 pr-4 pl-4 text-[#f1f1f1] text-lg font-light rounded-full">
             2024
@@ -130,6 +151,28 @@ export default function Home() {
       </div>
     );
   }
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (!cityRef.current) return;
+
+      const rect = cityRef.current.getBoundingClientRect();
+      const windowHeight = window.innerHeight;
+
+      // ✅ progress: 0 when top enters, 1 when bottom leaves
+      const progress = Math.min(
+        Math.max((windowHeight - rect.top) / (rect.height + windowHeight), 0),
+        1
+      );
+
+      // thresholds for swapping backgrounds
+      if (progress < 0.6) setCityBg(night);
+      else if (progress > 0.6) setCityBg(morning);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   useEffect(() => {
     // ✅ check screen size
@@ -146,10 +189,10 @@ export default function Home() {
   }, []);
 
   return (
-    <div className="w-full bg-[#030303] relative ">
+    <div className="w-full bg-[#030303] relative">
       {/* Hero Section */}
       <div
-        className="relative flex flex-col items-center justify-center text-center overflow-hidden cursor-none grain "
+        className="relative flex flex-col items-center justify-center text-center overflow-hidden cursor-none grain pt-25"
         style={{ height: "100vh", backgroundImage: `url(${RedBgRev})` }}
       >
         {/* ✅ Show InteractiveGrid only on desktop */}
@@ -158,29 +201,22 @@ export default function Home() {
         <div className="gap-4" style={{ gap: "2px" }}>
           <h1
             className="relative z-10 m-0 text-[#f0f0f0] jura-font font-bold leading-tight text-[8vh] sm:text-[15vh] md:text-[20vh] lg:text-[25vh]"
-            onMouseEnter={() => setHovering(true)}
-            onMouseLeave={() => setHovering(false)}
+            // onMouseEnter={() => setHovering(true)}
+            // onMouseLeave={() => setHovering(false)}
           >
             ADITYA
           </h1>
 
           <h1
             className="relative z-10 m-0 text-[#f0f0f0] jura-font font-bold leading-10 md:leading-20 lg:leading-28 text-[8vh] sm:text-[15vh] md:text-[20vh] lg:text-[25vh]"
-            onMouseEnter={() => setHovering(true)}
-            onMouseLeave={() => setHovering(false)}
+            // onMouseEnter={() => setHovering(true)}
+            // onMouseLeave={() => setHovering(false)}
           >
             SATULURI
           </h1>
         </div>
         <h1 className="relative z-10 mt-10 md:mt-18 lg:mt-24 mb-10 text-[#f0f0f0] jura-font tracking-[.25em] font-bold leading-tight text-[2vh] sm:text-[2vh] md:text-[2.5h] lg:text-[2.5vh]">
-          <TrueFocus
-            sentence="WEB & AI DEVELOPER, DESIGNER"
-            manualMode={false}
-            blurAmount={5}
-            borderColor="red"
-            animationDuration={1}
-            pauseBetweenAnimations={1}
-          />
+          WEB & AI DEVELOPER, DESIGNER
         </h1>
         <IoIosArrowDown className="relative z-10 mt-6 text-[#4d4d4d] text-3xl animate-bounce" />
       </div>
@@ -208,12 +244,23 @@ export default function Home() {
         </div>
 
         {/* Featured Work Section */}
-        <div className="flex flex-col w-full h-full pr-10 pl-10  pt-30 pb-30 items-start justify-center text-[#f0f0f0] bg-[#030303] text-2xl font-bold">
+        <div className="flex flex-col w-full h-full pr-10 pl-10   pb-30 items-start justify-center text-[#f0f0f0] bg-[#030303] text-2xl font-bold">
           <div className="flex flex-row align-bottom justify-between items-end w-full">
             <div className="text-8xl">
-              FEATURED <br></br>WORK
+              FEATURED <br></br>
+              <span className="flex flex-row justify-between">
+                WORK{" "}
+                <Link
+                  to="/projects"
+                  className="flex flex-row gap-2 items-end text-white hover:text-red-600 transition-colors duration-300 text-2xl"
+                >
+                  <span className="flex flex-row items-end cursor-target hover:border-b pb-1">
+                    VIEW ALL
+                  </span>
+                </Link>
+              </span>
             </div>
-            <div className="w-[50vw] font-normal text-2xl">
+            <div className="flex w-[50vw] font-normal text-2xl justify-end">
               Some text about my featured work (it) could be my most favorite
               works or recent works it depends.
             </div>
@@ -224,11 +271,12 @@ export default function Home() {
           </div>
         </div>
 
-        {/* Filler Image*/}
+        {/* Filler Image Night City*/}
         <div
-          className="w-full h-[90vh] flex items-center mb-30 justify-center text-[#f0f0f0] text-2xl font-normal pb-6 grain"
+          ref={cityRef}
+          className="w-full h-[100vh] flex items-center mb-30 justify-center text-[#f0f0f0] text-2xl font-normal pb-6 grain transition-all duration-700"
           style={{
-            backgroundImage: `url(${City})`,
+            backgroundImage: `url(${cityBg})`,
             backgroundSize: "cover",
             backgroundPosition: "center",
             backgroundAttachment: "fixed",
@@ -261,7 +309,8 @@ export default function Home() {
                   {skills.map((skill) => (
                     <div
                       key={skill}
-                      className="h-20 w-full border-2 flex flex-row items-center justify-center gap-4 border-neutral-800 rounded-full cursor-target"
+                      className="h-20 w-full border-2 flex flex-row items-center justify-center gap-4 border-neutral-800
+             rounded-4xl hover:rounded-none transition-all duration-500 ease-in-out cursor-target"
                     >
                       {skill}
                     </div>

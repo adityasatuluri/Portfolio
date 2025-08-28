@@ -40,7 +40,7 @@ import { MdRestartAlt } from "react-icons/md";
 
 function App() {
   const location = useLocation();
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const [isPlayerOpen, setIsPlayerOpen] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentTrack, setCurrentTrack] = useState(0);
@@ -168,11 +168,11 @@ function App() {
             transition={{ duration: 0.5, ease: easeInOut }}
             onClick={() => {
               setIsLoading(false);
-              // setIsPlayerOpen(true);
-              // setIsPlaying(true);
-              //   audioRef.current
-              //     .play()
-              //     .catch((err) => console.log("Autoplay blocked:", err));
+              setIsPlayerOpen(true);
+              setIsPlaying(true);
+              audioRef.current
+                .play()
+                .catch((err) => console.log("Autoplay blocked:", err));
             }}
             className="relative glitch-button z-30 w-[10vw] py-3 px-6 font-bold uppercase tracking-wider rounded overflow-hidden group transition-all duration-600 cursor-target"
             data-text="ENTER"

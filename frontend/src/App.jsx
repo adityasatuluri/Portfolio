@@ -16,7 +16,7 @@ import "./App.css";
 import Home from "./pages/Home.jsx";
 import MySpace from "./pages/Myspace.jsx";
 import Artworks from "./pages/Artworks.jsx";
-import Soft from "./pages/soft.jsx";
+import Soft from "./pages/Soft.jsx";
 import Resume from "./pages/Resume.jsx";
 
 // assets

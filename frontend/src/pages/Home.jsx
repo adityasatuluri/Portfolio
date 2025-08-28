@@ -1,36 +1,31 @@
-import React, { useEffect, useState, useRef, useMemo } from "react";
+import React, {
+  useEffect,
+  useState,
+  useRef,
+  useMemo,
+  lazy,
+  Suspense,
+} from "react";
+import { motion, AnimatePresence, easeInOut } from "motion/react";
 import { Routes, Route, Link, useLocation } from "react-router-dom";
 import BlurText from "../components/Blurtext.jsx";
-
+import ModelViewer from "../components/ModelViewer.jsx";
+import Johnny from "../assets/johnny.glb";
+import WhiteBg from "../assets/WhiteBg2.jpg";
 import ShinyText from "../components/Shinytext.jsx";
-import TrueFocus from "../components/TrueFocus.jsx";
-import GridDistortion from "../components/GridDistortion.jsx";
-import LetterGlitch from "../components/LetterGlitch.jsx";
+import item2077 from "../assets/item2077.png";
+import GlitchGif from "../assets/verticalglitch.gif";
 import { IoIosArrowDown } from "react-icons/io";
 import "../App.css";
 import InteractiveGrid from "../components/InteractiveGrid.jsx";
 import Inspiration from "../assets/cy-bw.png";
-import HeroBg from "../assets/hero.jpeg";
-import { MdArrowOutward } from "react-icons/md";
 import Footer from "../components/Footer.jsx";
-import Filler from "../assets/Home_Filler.svg";
-import RedBgRev from "../assets/red-bg-rev.png";
 import Mockup from "../assets/mockup.jpg";
-import Aditya from "../assets/aditya2.jpg";
-import City from "../assets/cy-city.png";
-import ReactLogo from "../assets/logos/tailwind.png";
-import InfiniteCards from "../components/InfiniteCards.jsx";
-import { Timeline } from "../components/Timeline";
-import SkillTree from "../components/SkillTree.jsx"; // Import SkillTree component
-import SkillsTab from "../components/SkillsTab.jsx"; // Import SkillsTab component
-import SkillButton from "../components/SkillButton.jsx";
 import morning from "../assets/cy-city-morning.png";
-import afternoon from "../assets/cy-city-afternoon.png";
-import evening from "../assets/cy-city-night.png";
 import night from "../assets/cy-city.png";
 import GridMotion from "../components/GridMotion.jsx";
-import FaultyTerminal from "../components/FaultyTerminal.jsx";
-import DotGrid from "../components/DotGrid.jsx";
+
+const JohnnyModel = lazy(() => import("../assets/johnny.glb"));
 
 export default function Home() {
   const [pos, setPos] = useState({ x: 0, y: 0 });
@@ -192,8 +187,8 @@ export default function Home() {
       );
 
       // thresholds for swapping backgrounds
-      if (progress < 0.6) setCityBg(night);
-      else if (progress > 0.6) setCityBg(morning);
+      if (progress <= 0.55) setCityBg(night);
+      else if (progress > 0.55) setCityBg(morning);
     };
 
     window.addEventListener("scroll", handleScroll);
@@ -209,99 +204,117 @@ export default function Home() {
   }, []);
 
   /* De comment if using interactive grid */
-  useEffect(() => {
-    const move = (e) => setPos({ x: e.clientX, y: e.clientY });
-    window.addEventListener("mousemove", move);
-    return () => window.removeEventListener("mousemove", move);
-  }, []);
+  // useEffect(() => {
+  //   const move = (e) => setPos({ x: e.clientX, y: e.clientY });
+  //   window.addEventListener("mousemove", move);
+  //   return () => window.removeEventListener("mousemove", move);
+  // }, []);
 
   return (
     <div className="w-full bg-[#030303] relative">
       {/* Hero Section */}
       <div
-        className="relative flex flex-col items-center justify-center text-center grain cursor-none"
-        style={{ height: "100vh" }}
+        className="relative flex flex-col items-center justify-center text-center cursor-none grain"
+        style={{ height: "90vh" }}
       >
-        {/* ✅ Show InteractiveGrid only on desktop */}
-        {!isMobile && (
+        {/* {!isMobile && ( */}
+        <div className="absolute inset-0 z-0">
+          {/* background at the very back */}
           <div
-            className="absolute inset-0 z-0"
+            className="absolute inset-0 z-0 w-[100vw] h-[90vh]"
             style={{
-              backgroundImage: `url(${RedBgRev})`,
+              backgroundImage: `url(${WhiteBg})`,
+              backgroundSize: "cover",
+              backgroundPosition: "bottom",
+              backgroundAttachment: "fixed",
+            }}
+          ></div>
+
+          {/* Text sample behind model - disabled for now */}
+          {/* <div
+            className="space-y-10 absolute inset-0 z-9 h-[100vh] flex flex-col justify-center pb-67 items-center "
+            style={{ gap: "2px" }}
+          >
+            <h1 className="m-0 text-[#060606] abnes font-bold leading-tight text-[6vh] sm:text-[15vh] md:text-[20vh] lg:text-[10vw]">
+              ADITYA
+            </h1>
+            <h1 className="m-0 text-[#060606] abnes font-bold leading-10 md:leading-20 lg:leading-28 text-[6vh] sm:text-[15vh] md:text-[20vh] lg:text-[10vw]">
+              SATULURI
+            </h1>
+          </div> */}
+
+          {/* ModelViewer*/}
+          {/* <Suspense
+            fallback={
+              <div className="w-full h-full flex items-center justify-center">
+                <div>Loading...</div>
+              </div>
+            }
+          >
+            <motion.div
+              initial={{ opacity: 0, filter: "blur(10px)" }}
+              animate={{ opacity: 0.6, filter: "blur(0px)" }}
+              transition={{ duration: 3, ease: easeInOut }}
+              className="w-full h-full relative z-12 mix-blend-darken"
+            >
+              <ModelViewer url={Johnny} width={"100vw"} height={"100vh"} />
+            </motion.div>
+          </Suspense> */}
+
+          <div
+            className="absolute inset-0 z-15 w-[100vw] h-[90vh]"
+            style={{
+              backgroundImage: `url(${item2077})`,
+              backgroundSize: "cover",
+              backgroundPosition: "bottom",
+              backgroundAttachment: "",
+            }}
+          ></div>
+
+          {/* Glitch overlay above everything */}
+          <div
+            className="absolute inset-0 z-10 w-[100vw] h-[100vh] mix-blend-screen"
+            style={{
+              backgroundImage: `url(${GlitchGif})`,
               backgroundSize: "cover",
               backgroundPosition: "center",
+              backgroundAttachment: "fixed",
             }}
-          >
-            {/* <FaultyTerminal
-              scale={3}
-              gridMul={[2, 1]}
-              digitSize={2}
-              timeScale={1}
-              pause={false}
-              scanlineIntensity={1}
-              glitchAmount={1}
-              flickerAmount={1}
-              noiseAmp={1}
-              chromaticAberration={0}
-              dither={0}
-              curvature={0.3}
-              tint="#660007"
-              mouseReact={true}
-              mouseStrength={0.5}
-              pageLoadAnimation={false}
-              brightness={1}
-            /> */}
-            <InteractiveGrid />
-            {/* <DotGrid
-              dotSize={10}
-              gap={15}
-              baseColor="transparent"
-              activeColor="#ff0000"
-              proximity={120}
-              shockRadius={250}
-              shockStrength={5}
-              resistance={750}
-              returnDuration={1.5}
-            /> */}
-            {/* <GridDistortion
-              imageSrc={HeroBg}
-              grid={10}
-              mouse={0.1}
-              strength={0.15}
-              relaxation={0.9}
-              className="custom-class"
-            /> */}
-          </div>
-        )}
+          ></div>
+          <div
+            className="absolute inset-0 z-10 w-[100vw] h-[100vh] mix-blend-color-dodge"
+            style={{
+              backgroundImage: `url(${GlitchGif})`,
+              backgroundSize: "cover",
+              backgroundPosition: "center",
+              backgroundAttachment: "fixed",
+            }}
+          ></div>
+        </div>
+        {/* )} */}
 
-        <div className="gap-4" style={{ gap: "2px" }}>
-          <h1
-            className="relative z-10 m-0 text-[#f0f0f0] font-sans orbitron-f font-bold leading-tight text-[8vh] sm:text-[15vh] md:text-[20vh] lg:text-[25vh]"
-            // onMouseEnter={() => setHovering(true)}
-            // onMouseLeave={() => setHovering(false)}
-          >
+        {/* Hero Text - always above */}
+        <div className="gap-4 relative z-20" style={{ gap: "2px" }}>
+          {/* drop-shadow-[0_1.2px_1.2px_rgba(0,0,0,0.8)] */}
+          <h1 className="m-0 text-[#f0f0f0]  abnes font-bold text-shadow-md  leading-tight text-[6vh] sm:text-[15vh] md:text-[20vh] lg:text-[10vw]">
             ADITYA
           </h1>
-
-          <h1
-            className="relative z-10 m-0 text-[#f0f0f0] jura-font font-bold leading-10 md:leading-20 lg:leading-28 text-[8vh] sm:text-[15vh] md:text-[20vh] lg:text-[25vh]"
-            // onMouseEnter={() => setHovering(true)}
-            // onMouseLeave={() => setHovering(false)}
-          >
+          <h1 className="m-0 text-[#f0f0f0] abnes font-bold text-shadow-md  leading-10 md:leading-20 lg:leading-28 text-[6vh] sm:text-[15vh] md:text-[20vh] lg:text-[10vw] ">
             SATULURI
           </h1>
         </div>
-        <h1 className="relative z-10 mt-10 md:mt-18 lg:mt-24 mb-10 text-[#f0f0f0] jura-font tracking-[.25em] font-bold leading-tight text-[2vh] sm:text-[2vh] md:text-[2.5h] lg:text-[2.5vh]">
+
+        <h1 className="relative z-20 mt-0 md:mt-15 lg:mt-20 mb-10 text-[#f0f0f0]  tracking-[.50em] font-bold leading-tight text-[2vh] sm:text-[2vh] md:text-[2.5h] lg:text-[2.5vh]">
           WEB & AI DEVELOPER, DESIGNER
         </h1>
-        <IoIosArrowDown className="relative z-10 mt-6 text-[#4d4d4d] text-3xl animate-bounce" />
+        <IoIosArrowDown className="relative z-20 mt-6 text-[#1c1c1c] text-3xl animate-bounce" />
       </div>
 
       {/* Scrollable Content */}
       <div>
         {/* About me*/}
         <div
-          className="w-full h-[90vh] flex items-center mb-30 justify-center text-[#f0f0f0] text-2xl font-normal pb-6 grain"
+          className="w-full h-[100vh] flex items-center mb-30 justify-center text-[#f0f0f0] text-2xl font-normal pb-6 grain"
           style={{
             backgroundImage: `url(${Inspiration})`,
             backgroundSize: "cover",
@@ -320,7 +333,7 @@ export default function Home() {
         </div>
 
         {/* Featured Work Section */}
-        <div className="flex flex-col w-full h-full pr-10 pl-10   pb-30 items-start justify-center text-[#f0f0f0] bg-[#030303] text-2xl font-bold">
+        <div className="flex flex-col w-full h-full pr-10 pl-10 pb-30 items-start justify-center text-[#f0f0f0] bg-[#030303] text-2xl font-bold">
           <div className="flex flex-row align-bottom justify-between items-end w-full">
             <div className="text-8xl">
               FEATURED <br></br>
@@ -347,23 +360,39 @@ export default function Home() {
               works or recent works it depends.
             </div>
           </div>
-          <div className="grid grid-cols-2 w-full pt-20 gap-[5vh]">
-            {/* Loop that extracts json and display divs */}
-            {divs}
-          </div>
+          <Suspense
+            fallback={
+              <div className="w-full h-full flex items-center justify-center">
+                <div>Loading...</div>
+              </div>
+            }
+          >
+            <div className="grid grid-cols-2 w-full pt-20 gap-[5vh]">
+              {/* Loop that extracts json and display divs */}
+              {divs}
+            </div>
+          </Suspense>
         </div>
 
         {/* Filler Image Night City*/}
-        <div
-          ref={cityRef}
-          className="w-full h-[100vh] flex items-center mb-30 justify-center text-[#f0f0f0] text-2xl font-normal pb-6 grain transition-all duration-1000"
-          style={{
-            backgroundImage: `url(${cityBg})`,
-            backgroundSize: "cover",
-            backgroundPosition: "center",
-            backgroundAttachment: "fixed",
-          }}
-        ></div>
+        <Suspense
+          fallback={
+            <div className="w-full h-full flex items-center justify-center">
+              <div>Loading...</div>
+            </div>
+          }
+        >
+          <div
+            ref={cityRef}
+            className="w-full h-[100vh] flex items-center mb-30 justify-center text-[#f0f0f0] text-2xl font-normal pb-6 grain transition-all duration-1000"
+            style={{
+              backgroundImage: `url(${cityBg})`,
+              backgroundSize: "cover",
+              backgroundPosition: "center",
+              backgroundAttachment: "fixed",
+            }}
+          ></div>
+        </Suspense>
 
         {/* Skills Section */}
         <div className="w-full h-full flex flex-row justify-between pr-10 pl-10 gap-10 text-2xl jura-font bg-[#030303] text-[#f0f0f0] cursor-crosshair">
@@ -442,45 +471,45 @@ export default function Home() {
         </div>
 
         {/* Filler Image*/}
-        {/* <div className="w-full h-[90vh] flex items-center justify-center text-[#f0f0f0] text-2xl font-bold pb-6">
-          <img
-            className="w-full h-full object-cover grain"
-            src={Filler}
-            alt="Filler"
-            style={{ objectFit: "cover", objectPosition: "center" }}
-          />
-        </div> */}
-        {/* <GridMotion items={items} /> */}
+        <Suspense
+          fallback={
+            <div className="w-full h-full flex items-center justify-center">
+              <div>Loading...</div>
+            </div>
+          }
+        >
+          <GridMotion items={items} />
+        </Suspense>
 
         {/* Contact Section */}
-        <div className="w-full h-[80vh]  mt-20 mb-30 flex items-center justify-between text-[#f0f0f0] text-xl font-bold pr-10">
-          <div className="flex flex-col justify-end  space-y-8 items-start">
-            <h1 className="text-8xl pl-10 mt-none leading-none w-[40vw]">
+        <div className="w-full h-full  mt-30 mb-30 flex items-center justify-center text-[#f0f0f0] text-xl font-bold pr-10">
+          <div className="flex flex-col justify-center  space-y-8 items-start">
+            <h1 className="text-8xl  mt-none leading-none w-full ">
               LET'S WORK TOGETHER
             </h1>
-            <div className="h-full w-full pl-10 pr-10 flex flex-col gap-4">
+            <div className="h-full w-full  mt-5 flex flex-col gap-4">
               <input
                 type="text"
                 placeholder="Name"
-                className="bg-white w-[37vw] text-black h-15 pl-4 pr-4 placeholder:font-normal placeholder:tracking-widest placeholder:font-sans"
+                className="bg-white w-full text-black h-15 pl-4 pr-4 placeholder:font-normal placeholder:tracking-widest placeholder:font-sans"
               />
               <input
                 type="text"
                 placeholder="Email"
-                className="bg-white w-[37vw] text-black h-15 pl-4 pr-4 placeholder:font-normal placeholder:tracking-widest placeholder:font-sans"
+                className="bg-white w-full text-black h-15 pl-4 pr-4 placeholder:font-normal placeholder:tracking-widest placeholder:font-sans"
               />
               <textarea
                 rows="10"
                 placeholder="Message"
-                className="bg-white w-[37vw] h-34 text-black px-4 py-2 outline-none resize-none placeholder:font-normal placeholder:tracking-widest placeholder:font-sans"
+                className="bg-white w-full h-34 text-black px-4 py-2 outline-none resize-none placeholder:font-normal placeholder:tracking-widest placeholder:font-sans"
               />
 
-              <button className="bg-[#090909] text-white hover:bg-red-600  hover:font-bold hover:border-black w-[37vw] h-15 border-1 border-neutral-400 jura-font text-normal cursor-target">
+              <button className="bg-[#090909] text-white hover:bg-red-600  hover:font-bold hover:border-black w-full h-15 border-1 border-neutral-400 jura-font text-normal cursor-target">
                 SEND
               </button>
             </div>
           </div>
-          <div className="w-[75vw] h-full pt-4 ">
+          {/* <div className="w-[75vw] h-full pt-4 ">
             <div className="h-full w-full grain">
               <img
                 className="w-[60vw] h-full object-cover "
@@ -488,7 +517,7 @@ export default function Home() {
                 alt="Aditya"
               />
             </div>
-          </div>
+          </div> */}
         </div>
 
         {/* FOOTER */}

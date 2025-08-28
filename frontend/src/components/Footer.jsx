@@ -7,7 +7,7 @@ import RedBg from "../assets/red-bg.png";
 export default function Footer() {
   return (
     <div
-      className="w-full h-[50vh] flex flex-col items-center justify-center custom-border text-[#f0f0f0] jura-font font-bold bg-cover bg-center bg-no-repeat"
+      className="w-full h-[50vh] flex flex-col items-center justify-center custom-border text-[#f0f0f0] jura-font font-bold bg-cover bg-center bg-no-repeat relative z-0"
       style={{
         backgroundImage: `url(${RedBg})`,
       }}

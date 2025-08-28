@@ -5,6 +5,24 @@
 
 /* App.css */
 
+@font-face {
+  font-family: "abnes";
+  src: url(fonts/abnes.ttf);
+}
+
+@font-face {
+  font-family: "echocore";
+  src: url(fonts/echocore.otf);
+}
+
+.abnes {
+  font-family: "abnes", sans-serif;
+}
+
+.echocore {
+  font-family: "echocore", sans-serif;
+}
+
 ::-webkit-scrollbar {
   width: 0px;
   height: 0px;
@@ -139,4 +157,80 @@
   90% {
     transform: translate(-5%, -10%);
   }
+}
+
+.glitch-button span {
+  position: relative;
+  display: inline-block;
+}
+
+.glitch-button span::before,
+.glitch-button span::after {
+  content: attr(data-text);
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+}
+
+.glitch-button span::before {
+  animation: glitchTop 2s infinite linear alternate-reverse;
+  color: #ff3b3b; /* red glitch layer */
+}
+
+.glitch-button span::after {
+  animation: glitchBottom 2s infinite linear alternate-reverse;
+  color: #00f6ff; /* cyan glitch layer */
+}
+
+@keyframes glitchTop {
+  0% {
+    clip: rect(0, 9999px, 0, 0);
+    transform: translate(0);
+  }
+  20% {
+    clip: rect(0, 9999px, 100%, 0);
+    transform: translate(-2px, -2px);
+  }
+  40% {
+    clip: rect(0, 9999px, 0, 0);
+    transform: translate(0);
+  }
+  60% {
+    clip: rect(0, 9999px, 100%, 0);
+    transform: translate(2px, 2px);
+  }
+  100% {
+    clip: rect(0, 9999px, 0, 0);
+    transform: translate(0);
+  }
+}
+
+@keyframes glitchBottom {
+  0% {
+    clip: rect(0, 9999px, 0, 0);
+    transform: translate(0);
+  }
+  20% {
+    clip: rect(0, 9999px, 100%, 0);
+    transform: translate(2px, 2px);
+  }
+  40% {
+    clip: rect(0, 9999px, 0, 0);
+    transform: translate(0);
+  }
+  60% {
+    clip: rect(0, 9999px, 100%, 0);
+    transform: translate(-2px, -2px);
+  }
+  100% {
+    clip: rect(0, 9999px, 0, 0);
+    transform: translate(0);
+  }
+}
+
+.stroke {
+  -webkit-text-stroke: 5px black;
 }

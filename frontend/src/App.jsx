@@ -27,6 +27,8 @@ import Glitch2 from "./assets/minimalglitch.gif";
 import WhiteBg from "./assets/WhiteBg2.jpg";
 import Johnny from "./assets/johnny.glb";
 import LoadingBg from "./assets/loading_bg.jpg";
+import logo from "./assets/logo.png";
+import { CgMenuGridO } from "react-icons/cg";
 
 // songs
 import V from "./assets/sound/V.mp3";
@@ -49,6 +51,7 @@ function App() {
   const [playerIcon, setPlayerIcon] = useState("Pause");
   const [menuItem, setMenuItem] = useState("Home");
   const [volume, setVolume] = useState(0.3);
+  const [isMobile, setIsMobile] = useState(false);
 
   // playlist with names
   const playlist = [
@@ -80,6 +83,10 @@ function App() {
 
   // track progress
   useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 768); // md breakpoint
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
+
     const audio = audioRef.current;
 
     const updateProgress = () => {
@@ -98,6 +105,7 @@ function App() {
     return () => {
       audio.removeEventListener("timeupdate", updateProgress);
       audio.removeEventListener("loadedmetadata", updateProgress);
+      window.removeEventListener("resize", checkMobile);
     };
   }, []);
 
@@ -153,11 +161,11 @@ function App() {
 
   return (
     <>
-      <TargetCursor spinDuration={2} hideDefaultCursor={true} />
+      {/* <TargetCursor spinDuration={2} hideDefaultCursor={true} /> */}
 
       {isLoading ? (
         <motion.div
-          className="text-white w-full h-[100vh] flex flex-col justify-center align-middle items-center space-y-10 grain"
+          className="text-white w-full min-h-screen flex flex-col justify-center align-middle items-center space-y-10 grain"
           initial={{ background: "#090909" }}
           animate={{ backgroundImage: `url(${LoadingBg})` }}
           transition={{ duration: 1 }}
@@ -168,13 +176,14 @@ function App() {
             transition={{ duration: 0.5, ease: easeInOut }}
             onClick={() => {
               setIsLoading(false);
-              setIsPlayerOpen(true);
+              // setIsPlayerOpen(true);
               setIsPlaying(true);
               audioRef.current
                 .play()
                 .catch((err) => console.log("Autoplay blocked:", err));
             }}
-            className="relative glitch-button z-30 w-[10vw] py-3 px-6 font-bold uppercase tracking-wider rounded overflow-hidden group transition-all duration-600 cursor-target"
+            className="relative glitch-button z-30 w-[20vh] py-3 px-6 font-bold uppercase tracking-wider rounded overflow-hidden group transition-all duration-600 cursor-target
+             sm:text-sm"
             data-text="ENTER"
           >
             {/* Background layers */}
@@ -254,12 +263,75 @@ function App() {
         <div>
           {/* Main Content */}
           <div className="w-full min-h-screen flex flex-col bg-[#080808] font-sans relative">
-            <header
-              id="navbar"
-              className="w-full flex items-center justify-center gap-6 p-4 text-white sticky top-0 z-50 bg-black/85 backdrop-blur-lg hover:bg-black/90 transition-colors duration-300 custom-border inset-shadow-sm"
-            >
-              {/* <img src={logo} className="w-10 h-10" alt="Logo" /> */}
-              <div className="flex items-center gap-6 text-sm md:text-base tracking-widest">
+            {!isMobile ? (
+              <header
+                id="navbar"
+                className="w-full flex items-center justify-center gap-6 p-4 text-white sticky top-0 z-50 bg-black/85 backdrop-blur-lg hover:bg-black/90 transition-colors duration-300 custom-border inset-shadow-sm"
+              >
+                <div className="flex items-center gap-6 text-sm md:text-base tracking-widest">
+                  <Link
+                    to="/"
+                    onClick={() => setMenuItem("Home")}
+                    className={`hover:text-red-500 cursor-target ${
+                      menuItem === "Home"
+                        ? "text-shadow-lg text-shadow-red-600"
+                        : "text-[#f0f0f0]"
+                    }`}
+                  >
+                    Home
+                  </Link>
+
+                  <Link
+                    to="/projects"
+                    onClick={() => setMenuItem("Projects")}
+                    className={`hover:text-red-500 cursor-target ${
+                      menuItem === "Projects"
+                        ? "text-shadow-lg text-shadow-red-600"
+                        : "text-[#f0f0f0]"
+                    }`}
+                  >
+                    Projects
+                  </Link>
+
+                  <Link
+                    to="/artworks"
+                    onClick={() => setMenuItem("Artworks")}
+                    className={`hover:text-red-500 cursor-target ${
+                      menuItem === "Artworks"
+                        ? "text-shadow-lg text-shadow-red-600"
+                        : "text-[#f0f0f0]"
+                    }`}
+                  >
+                    Artworks
+                  </Link>
+
+                  <Link
+                    to="/myspace"
+                    onClick={() => setMenuItem("Myspace")}
+                    className={`hover:text-red-500 cursor-target ${
+                      menuItem === "Myspace"
+                        ? "text-shadow-lg text-shadow-red-600"
+                        : "text-[#f0f0f0]"
+                    }`}
+                  >
+                    MySpace
+                  </Link>
+
+                  <a
+                    className="hover:text-red-500 cursor-target"
+                    href={resume}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    Resume
+                  </a>
+                </div>
+              </header>
+            ) : (
+              <header
+                id="navbar"
+                className="w-full flex items-center justify-between gap-6 p-4 text-white sticky top-0 z-50 bg-black/85 backdrop-blur-lg hover:bg-black/90 transition-colors duration-300 custom-border inset-shadow-sm"
+              >
                 <Link
                   to="/"
                   onClick={() => setMenuItem("Home")}
@@ -269,58 +341,25 @@ function App() {
                       : "text-[#f0f0f0]"
                   }`}
                 >
-                  Home
+                  <img
+                    src={logo}
+                    alt="Logo"
+                    className="h-8 w-8 object-contain"
+                  />
                 </Link>
-
                 <Link
-                  to="/projects"
-                  onClick={() => setMenuItem("Projects")}
+                  to="/"
+                  onClick={() => setMenuItem("Home")}
                   className={`hover:text-red-500 cursor-target ${
-                    menuItem === "Projects"
+                    menuItem === "Home"
                       ? "text-shadow-lg text-shadow-red-600"
                       : "text-[#f0f0f0]"
                   }`}
                 >
-                  Projects
+                  <CgMenuGridO className="h-8 w-8" />
                 </Link>
-
-                <Link
-                  to="/artworks"
-                  onClick={() => setMenuItem("Artworks")}
-                  className={`hover:text-red-500 cursor-target ${
-                    menuItem === "Artworks"
-                      ? "text-shadow-lg text-shadow-red-600"
-                      : "text-[#f0f0f0]"
-                  }`}
-                >
-                  Artworks
-                </Link>
-
-                <Link
-                  to="/myspace"
-                  onClick={() => setMenuItem("Myspace")}
-                  className={`hover:text-red-500 cursor-target ${
-                    menuItem === "Myspace"
-                      ? "text-shadow-lg text-shadow-red-600"
-                      : "text-[#f0f0f0]"
-                  }`}
-                >
-                  MySpace
-                </Link>
-
-                {/* If you want Resume in routes instead of external file */}
-                {/* <Link to="/resume" className="hover:text-red-500 cursor-pointer">Resume</Link> */}
-
-                <a
-                  className="hover:text-red-500 cursor-target"
-                  href={resume}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  Resume
-                </a>
-              </div>
-            </header>
+              </header>
+            )}
 
             <main className="flex-1 bg-black scrollbar-hide">
               <AnimatePresence mode="wait">
@@ -344,14 +383,14 @@ function App() {
           </div>
 
           {/* Floating Music Icon */}
-          <div className="fixed bottom-15 right-6 z-50">
+          {/* <div className="fixed bottom-15 right-6 z-50">
             <button
               onClick={() => setIsPlayerOpen(!isPlayerOpen)}
               className="p-4 bg-red-600 mix-blend-luminosity text-white rounded-full shadow-lg hover:bg-red-500  cursor-target hover:rounded-sm transform transition-all duration-100 transition-ease-in-out"
             >
               <Music2 className="w-6 h-6" />
             </button>
-          </div>
+          </div> */}
 
           {/* Expanded Player */}
           {isPlayerOpen && (

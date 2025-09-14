@@ -3,8 +3,20 @@ import "../App.css";
 import { MdArrowOutward } from "react-icons/md";
 import LogoBg from "../assets/logo_bg.svg";
 import RedBg from "../assets/red-bg.png";
+import { useEffect, useState } from "react";
+import logo from "../assets/logo.png";
 
 export default function Footer() {
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    // ✅ check screen size
+    const checkMobile = () => setIsMobile(window.innerWidth < 768); // md breakpoint
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
+  }, []);
+
   return (
     <div
       className="w-full h-[50vh] flex flex-col items-center justify-center custom-border text-[#f0f0f0] jura-font font-bold bg-cover bg-center bg-no-repeat relative z-0"
@@ -21,20 +33,70 @@ export default function Footer() {
         />
 
         {/* Text in front */}
-        <div className="flex items-center justify-center text-9xl tracking-wide relative z-10">
+        <div className="flex items-center justify-center text-6xl lg:text-9xl tracking-wide relative z-10 lg:mb-0 mb-8">
           ADITYA SATULURI
         </div>
 
-        <div className="w-full pl-43 pr-46 pt-4 flex flex-row justify-between items-center">
-          <div className="flex flex-row gap-4">
+        {!isMobile ? (
+          <div className="w-full pl-43 pr-46 pt-4  flex flex-col lg:flex-row justify-between items-center">
+            <div className="lg:flex lg:flex-row lg:gap-5  mb-4 lg:mb-0">
+              <a
+                className="flex flex-row text-white hover:text-red-600 transition-colors duration-300 cursor-pointer"
+                href="https://www.linkedin.com/in/aditya-satuluri-a250a31a0/"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <span className="hover:border-b">LINKEDIN</span>
+                <MdArrowOutward className="h-5 w-5" />
+              </a>{" "}
+              <a
+                className="flex flex-row text-white hover:text-red-600 transition-colors duration-300 cursor-pointer"
+                href="https://www.behance.net/adityasatuluri"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <span className="hover:border-b">BEHANCE</span>
+                <MdArrowOutward className="h-5 w-5" />
+              </a>{" "}
+              <a
+                className="flex flex-row text-white hover:text-red-600 transition-colors duration-300 cursor-pointer"
+                href="https://www.instagram.com/aditya.satuluri/"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <span className="hover:border-b">INSTAGRAM</span>
+                <MdArrowOutward className="h-5 w-5" />
+              </a>
+              <a
+                className="flex flex-row text-white hover:text-red-600 transition-colors duration-300 cursor-pointer"
+                href="mailto:s.aditya.in@gmail.com"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <span className="hover:border-b">EMAIL</span>
+                <MdArrowOutward className="h-5 w-5" />
+              </a>
+            </div>
+            {!isMobile ? (
+              <a
+                className="flex flex-row text-white hover:text-red-600 transition-colors duration-300 cursor-pointer"
+                onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+              >
+                <span className="hover:border-b">BACK TO TOP</span>
+              </a>
+            ) : (
+              <></>
+            )}
+          </div>
+        ) : (
+          <div className="flex flex-row gap-5 justify-between items-center w-full px-12">
             <a
               className="flex flex-row text-white hover:text-red-600 transition-colors duration-300 cursor-target"
               href="https://www.linkedin.com/in/aditya-satuluri-a250a31a0/"
               target="_blank"
               rel="noopener noreferrer"
             >
-              <span className="hover:border-b">LINKEDIN</span>
-              <MdArrowOutward className="h-full w-full" />
+              <img src={logo} alt="Logo" className="h-8 w-8 object-contain" />
             </a>{" "}
             <a
               className="flex flex-row text-white hover:text-red-600 transition-colors duration-300 cursor-target"
@@ -42,8 +104,7 @@ export default function Footer() {
               target="_blank"
               rel="noopener noreferrer"
             >
-              <span className="hover:border-b">BEHANCE</span>
-              <MdArrowOutward className="h-full w-full" />
+              <img src={logo} alt="Logo" className="h-8 w-8 object-contain" />
             </a>{" "}
             <a
               className="flex flex-row text-white hover:text-red-600 transition-colors duration-300 cursor-target"
@@ -51,8 +112,7 @@ export default function Footer() {
               target="_blank"
               rel="noopener noreferrer"
             >
-              <span className="hover:border-b">INSTAGRAM</span>
-              <MdArrowOutward className="h-full w-full" />
+              <img src={logo} alt="Logo" className="h-8 w-8 object-contain" />
             </a>
             <a
               className="flex flex-row text-white hover:text-red-600 transition-colors duration-300 cursor-target"
@@ -60,17 +120,10 @@ export default function Footer() {
               target="_blank"
               rel="noopener noreferrer"
             >
-              <span className="hover:border-b">EMAIL</span>
-              <MdArrowOutward className="h-full w-full" />
+              <img src={logo} alt="Logo" className="h-8 w-8 object-contain" />
             </a>
           </div>
-          <a
-            className="flex flex-row text-white hover:text-red-600 transition-colors duration-300 cursor-target"
-            onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-          >
-            <span className="hover:border-b">BACK TO TOP</span>
-          </a>
-        </div>
+        )}
       </div>
     </div>
   );

@@ -1,6 +1,9 @@
 import React from "react";
 import "../App.css";
 import { MdArrowOutward } from "react-icons/md";
+import { FaInstagram, FaLinkedinIn, FaBehance } from "react-icons/fa";
+import { TbBrandGmail } from "react-icons/tb";
+
 import LogoBg from "../assets/logo_bg.svg";
 import RedBg from "../assets/red-bg.png";
 import { useEffect, useState } from "react";
@@ -38,8 +41,8 @@ export default function Footer() {
         </div>
 
         {!isMobile ? (
-          <div className="w-full pl-43 pr-46 pt-4  flex flex-col lg:flex-row justify-between items-center">
-            <div className="lg:flex lg:flex-row lg:gap-5  mb-4 lg:mb-0">
+          <div className="w-full pl-43 pr-46 pt-4 flex flex-row lg:flex-row justify-center items-center z-90">
+            <div className="flex flex-row lg:gap-15 md:gap-6 sm:gap-4  mb-4 lg:mb-0">
               <a
                 className="flex flex-row text-white hover:text-red-600 transition-colors duration-300 cursor-pointer"
                 href="https://www.linkedin.com/in/aditya-satuluri-a250a31a0/"
@@ -48,7 +51,7 @@ export default function Footer() {
               >
                 <span className="hover:border-b">LINKEDIN</span>
                 <MdArrowOutward className="h-5 w-5" />
-              </a>{" "}
+              </a>
               <a
                 className="flex flex-row text-white hover:text-red-600 transition-colors duration-300 cursor-pointer"
                 href="https://www.behance.net/adityasatuluri"
@@ -57,7 +60,8 @@ export default function Footer() {
               >
                 <span className="hover:border-b">BEHANCE</span>
                 <MdArrowOutward className="h-5 w-5" />
-              </a>{" "}
+              </a>
+
               <a
                 className="flex flex-row text-white hover:text-red-600 transition-colors duration-300 cursor-pointer"
                 href="https://www.instagram.com/aditya.satuluri/"
@@ -77,7 +81,7 @@ export default function Footer() {
                 <MdArrowOutward className="h-5 w-5" />
               </a>
             </div>
-            {!isMobile ? (
+            {/* {!isMobile ? (
               <a
                 className="flex flex-row text-white hover:text-red-600 transition-colors duration-300 cursor-pointer"
                 onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
@@ -86,41 +90,41 @@ export default function Footer() {
               </a>
             ) : (
               <></>
-            )}
+            )} */}
           </div>
         ) : (
-          <div className="flex flex-row gap-5 justify-between items-center w-full px-12">
+          <div className="flex flex-row gap-5 justify-between items-center w-full px-12 z-90">
             <a
-              className="flex flex-row text-white hover:text-red-600 transition-colors duration-300 cursor-target"
+              className="flex flex-row text-white hover:text-red-600 transition-colors duration-300 cursor-pointer"
               href="https://www.linkedin.com/in/aditya-satuluri-a250a31a0/"
               target="_blank"
               rel="noopener noreferrer"
             >
-              <img src={logo} alt="Logo" className="h-8 w-8 object-contain" />
+              <FaLinkedinIn className="h-8 w-8 object-contain" />
             </a>{" "}
             <a
-              className="flex flex-row text-white hover:text-red-600 transition-colors duration-300 cursor-target"
+              className="flex flex-row text-white hover:text-red-600 transition-colors duration-300 cursor-pointer"
               href="https://www.behance.net/adityasatuluri"
               target="_blank"
               rel="noopener noreferrer"
             >
-              <img src={logo} alt="Logo" className="h-8 w-8 object-contain" />
+              <FaBehance className="h-8 w-8 object-contain" />
             </a>{" "}
             <a
-              className="flex flex-row text-white hover:text-red-600 transition-colors duration-300 cursor-target"
+              className="flex flex-row text-white hover:text-red-600 transition-colors duration-300 cursor-pointer"
               href="https://www.instagram.com/aditya.satuluri/"
               target="_blank"
               rel="noopener noreferrer"
             >
-              <img src={logo} alt="Logo" className="h-8 w-8 object-contain" />
+              <FaInstagram className="h-8 w-8 object-contain" />
             </a>
             <a
-              className="flex flex-row text-white hover:text-red-600 transition-colors duration-300 cursor-target"
+              className="flex flex-row text-white hover:text-red-600 transition-colors duration-300 cursor-pointer"
               href="mailto:s.aditya.in@gmail.com"
               target="_blank"
               rel="noopener noreferrer"
             >
-              <img src={logo} alt="Logo" className="h-8 w-8 object-contain" />
+              <TbBrandGmail className="h-8 w-8 object-contain" />
             </a>
           </div>
         )}

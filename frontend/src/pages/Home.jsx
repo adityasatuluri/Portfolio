@@ -12,7 +12,6 @@ import BlurText from "../components/Blurtext.jsx";
 import ModelViewer from "../components/ModelViewer.jsx";
 import Johnny from "../assets/johnny.glb";
 import WhiteBg from "../assets/WhiteBg2.jpg";
-import WhiteBg3 from "../assets/WhiteBg3.jpg";
 import ShinyText from "../components/ShinyText.jsx";
 import item2077 from "../assets/item2077.png";
 import GlitchGif from "../assets/verticalglitch.gif";
@@ -23,7 +22,9 @@ import Footer from "../components/Footer.jsx";
 import Mockup from "../assets/mockup.jpg";
 import morning from "../assets/cy-city-morning.png";
 import night from "../assets/cy-city.png";
-import GridMotion from "../components/GridMotion.jsx";
+import projectsData from "../assets/projects.json";
+import { MdArrowOutward, MdArrowUpward } from "react-icons/md";
+import ScrollToTop from "react-scroll-to-top";
 
 const JohnnyModel = lazy(() => import("../assets/johnny.glb"));
 
@@ -31,9 +32,11 @@ export default function Home() {
   const [pos, setPos] = useState({ x: 0, y: 0 });
   const [hovering, setHovering] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
+  const [mobileWidth, setMobileWidth] = useState(0);
   const [hoveredIndex, setHoveredIndex] = useState();
   const [cityBg, setCityBg] = useState(night);
   const cityRef = useRef(null);
+  const [selectedProject, setSelectedProject] = useState(null);
 
   const categories = {
     "Programming Languages": ["HTML", "CSS", "JavaScript", "Python", "Java"],
@@ -115,6 +118,7 @@ export default function Home() {
   const [currentCategory, setCurrentCategory] = React.useState("");
   const [currentSkills, setCurrentSkills] = React.useState("");
 
+  const projects = projectsData.projects;
   const divs = [];
   for (let i = 0; i < 5; i++) {
     divs.push(
@@ -178,23 +182,36 @@ export default function Home() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  // Mobile Width Detection
   useEffect(() => {
     // ✅ check screen size
     const checkMobile = () => setIsMobile(window.innerWidth < 768); // md breakpoint
     checkMobile();
+    const checkMobileWidth = () => {
+      setMobileWidth(window.innerWidth);
+      // console.log(window.innerWidth);
+    }; // md breakpoint
+    checkMobileWidth();
     window.addEventListener("resize", checkMobile);
-    return () => window.removeEventListener("resize", checkMobile);
+    window.addEventListener("resize", checkMobileWidth);
+    return () => window.removeEventListener("resize", checkMobileWidth);
   }, []);
-
-  /* De comment if using interactive grid */
-  // useEffect(() => {
-  //   const move = (e) => setPos({ x: e.clientX, y: e.clientY });
-  //   window.addEventListener("mousemove", move);
-  //   return () => window.removeEventListener("mousemove", move);
-  // }, []);
 
   return (
     <div className="w-full bg-[#030303] relative">
+      <ScrollToTop
+        smooth
+        component={<MdArrowUpward size={30} color="white" />}
+        style={{
+          backgroundColor: "red",
+          borderRadius: "50%",
+          padding: "8px",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          boxShadow: "0 4px 6px rgba(0,0,0,0.2)",
+        }}
+      />
       {/* Hero Section */}
       <div className="relative flex flex-col items-center justify-center text-center grain min-h-[50vh] sm:min-h-[90vh] md:min-h-[90vh] lg:min-h-[90vh]">
         {/* {!isMobile && ( */}
@@ -213,7 +230,7 @@ export default function Home() {
           ></div>
 
           {/* ModelViewer*/}
-          <Suspense
+          {/* <Suspense
             fallback={
               <div className="w-full h-full flex items-center justify-center">
                 <div>Loading...</div>
@@ -228,7 +245,7 @@ export default function Home() {
             >
               <ModelViewer url={Johnny} width={"100vw"} height={"100vh"} />
             </motion.div>
-          </Suspense>
+          </Suspense> */}
 
           <div
             className="absolute inset-0 z-15 w-full h-full "
@@ -265,34 +282,43 @@ export default function Home() {
         {/* Hero Text - always above */}
         <div className="gap-4 relative z-20 select-none" style={{ gap: "2px" }}>
           {/* drop-shadow-[0_1.2px_1.2px_rgba(0,0,0,0.8)] */}
-          <h1
+          <motion.h1
+            initial={{ opacity: 0, filter: "blur(10px)" }}
+            animate={{ opacity: 1, filter: "blur(0px)" }}
+            transition={{ duration: 1, ease: easeInOut }}
             className="mt-10 lg:m-0 text-[#f0f0f0]  abnes font-bold text-shadow-md  leading-tight 
           text-[7vh] sm:text-[7vh] md:text-[13vh] lg:text-[10vw]"
           >
             ADITYA
-          </h1>
-          <h1
+          </motion.h1>
+          <motion.h1
+            initial={{ opacity: 0, filter: "blur(10px)" }}
+            animate={{ opacity: 1, filter: "blur(0px)" }}
+            transition={{ duration: 1.5, ease: easeInOut }}
             className="m-0 text-[#f0f0f0] abnes font-bold text-shadow-md  leading-10 md:leading-20 lg:leading-28 
           text-[5vh] sm:text-[7vh] md:text-[13vh] lg:text-[10vw] "
           >
             SATULURI
-          </h1>
+          </motion.h1>
         </div>
 
-        <h1
+        <motion.h1
+          initial={{ opacity: 0, filter: "blur(10px)" }}
+          animate={{ opacity: 1, filter: "blur(0px)" }}
+          transition={{ duration: 2, ease: easeInOut }}
           className="select-none relative z-20 mt-5 sm:mt-10 md:mt-15 lg:mt-20 mb-10 p-5 text-[#f0f0f0]  tracking-[.20em] lg:tracking-[.50em]  
         font-bold leading-tight text-[1.7vh] sm:text-[2vh] md:text-[2.5h] lg:text-[2.5vh] "
         >
           WEB & AI DEVELOPER, DESIGNER
-        </h1>
+        </motion.h1>
         <IoIosArrowDown className="relative z-20 lg:mt-6 text-[#1c1c1c] text-3xl animate-bounce" />
       </div>
 
       {/* Scrollable Content */}
-      <div>
+      <div className="flex flex-col gap-15">
         {/* About me*/}
         <div
-          className="w-full h-[50vh] lg:h-[100vh] flex items-center mb-30 justify-center text-[#f0f0f0] text-2xl font-normal p-6 grain align-middle"
+          className="w-full h-[50vh] lg:h-[100vh] flex items-center justify-center text-[#f0f0f0] text-2xl font-normal p-6 grain align-middle"
           style={{
             backgroundImage: `url(${Inspiration})`,
             backgroundSize: "fill",
@@ -311,34 +337,25 @@ export default function Home() {
         </div>
 
         {/* Featured Work Section */}
-        {/* <div className="h-[60vh]"> hi</div> */}
-        <div className="flex flex-col w-full h-full lg:h-full lg:pr-10 lg:pl-10 lg:pb-30 p-0 m-0 items-center justify-center text-[#f0f0f0] bg-[#030303] text-2xl font-bold">
-          <div className="flex lg:flex-row align-bottom lg:justify-between justify-between items-end w-full">
-            <div className="text-6xl lg:text-8xl w-full h-full flex flex-col justify-center items-center lg:items-start">
-              FEATURED <br></br>
-              <span className="flex lg:flex-row lg:justify-between lg:items-end flex-col items-center gap-6 lg:gap-0 w-[30vw]">
-                WORK{" "}
-                <Link
-                  to="/projects"
-                  className="flex  text-white hover:text-red-600 transition-colors duration-300 text-2xl"
-                >
-                  <ShinyText
-                    text="VIEW ALL"
-                    disabled={false}
-                    speed={3}
-                    className=" cursor-target hover:border-b pb-1"
-                  />
-                </Link>
-              </span>
+        <div className="flex flex-col w-full h-full lg:h-full lg:pr-10 lg:pl-10 lg:pb-10 p-0 m-0 items-center justify-center text-[#f0f0f0] bg-[#030303] text-2xl font-bold">
+          <div className="flex flex-col lg:flex-col lg:justify-between justify-between align-middle items-center w-full gap-6">
+            <div className="flex flex-col lg:flex-row md:px-6 sm:px-6 px-6 lg:px-0 text-6xl lg:text-8xl w-full h-full justify-center align-middle items-center lg:items-center">
+              <div>FEATURED</div> {mobileWidth >= 1026 && <>&nbsp;</>} WORK
             </div>
-            {!isMobile ? (
-              <div className="flex  font-normal text-2xl justify-end">
-                Some text about my featured work (it) could be my most favorite
-                works or recent works it depends.
-              </div>
-            ) : (
-              <div className="p-0 m-0 h-0 w-0"></div>
-            )}
+            {/* {!isMobile ? (
+                                    <div className="flex font-normal text-2xl justify-end">
+                                      Some text about my featured work (it) could be my most favorite
+                                      works or recent works it depends.
+                                    </div>
+                                  ) : (
+                                    <div className="p-0 m-0 h-0 w-0"></div>
+                                  )} */}
+            <Link
+              to="/projects"
+              className="flex  text-white hover:border-red-600 transition-colors duration-300 text-2xl"
+            >
+              <ShinyText text="VIEW ALL" disabled={false} speed={3} />
+            </Link>
           </div>
 
           <Suspense
@@ -348,8 +365,127 @@ export default function Home() {
               </div>
             }
           >
-            <div className="grid lg:grid-cols-2 w-full pt-20 gap-[5vh] justify-center">
-              {divs}
+            <div className="grid md:grid-cols-2 lg:grid-cols-2 w-full pt-20 gap-[5vh] justify-center items-center align-middle">
+              {projects.slice(0, 4).map((p, i) => (
+                <div
+                  key={p.id}
+                  className="h-[40vh] md:h-[75vh] lg:h-[75vh] w-full sm:m-0 md:mx-5 lg:m-0 border border-neutral-800 rounded-2xl transition-all duration-300 ease-in-out hover:rounded-none cursor-pointer"
+                  onClick={() => {
+                    if (isMobile) setSelectedProject(p); // only open modal on mobile
+                  }}
+                >
+                  <div
+                    className="relative flex items-center justify-center h-7/10 lg:h-8/10 rounded-t-2xl transition-all duration-300 ease-in-out hover:rounded-t-none"
+                    style={{
+                      backgroundImage: `url(${new URL(
+                        `../assets/${p.image}`,
+                        import.meta.url
+                      )})`,
+                      backgroundSize: "cover",
+                      backgroundPosition: "center",
+                    }}
+                  >
+                    {/* overlay - desktop hover only */}
+                    {!isMobile && (
+                      <div className="flex flex-col gap-5 w-full h-full bg-[#f0f0f0]/50 text-[#010101] transition-all duration-300 backdrop-blur-md items-center justify-center opacity-0 hover:opacity-100 rounded-t-2xl hover:rounded-none">
+                        <div>{p.description}</div>
+                        <div className="flex flex-row gap-10">
+                          {p.repo_link && (
+                            <a
+                              className="px-3 py-3 bg-[#040404] hover:bg-[#0f0f0f] hover:shadow-xl/30 hover:shadow-black text-[#f0f0f0] font-light rounded-xl cursor-pointer transition-all duration-300 ease-in-out"
+                              href={p.repo_link}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                            >
+                              Github
+                            </a>
+                          )}
+                          {p.live_link && (
+                            <a
+                              className="px-3 py-3 bg-[#040404] hover:bg-[#0f0f0f] hover:shadow-xl/30 hover:shadow-black text-[#f0f0f0] font-light rounded-xl cursor-pointer transition-all duration-300 ease-in-out"
+                              href={p.live_link[0]}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                            >
+                              {p.live_link[1] ? p.live_link[1] : "Preview"}
+                            </a>
+                          )}
+                        </div>
+                      </div>
+                    )}
+                  </div>
+
+                  <div className="flex flex-row gap-5 items-center justify-between lg:px-6 px-4 bg-[#0c0c0c] h-3/10 lg:h-2/10 rounded-b-2xl transition-all duration-300 ease-in-out hover:rounded-none">
+                    <div className="flex flex-col items-start justify-center">
+                      <div className="text-[#f1f1f1] text-lg sm:text-lg md:text-lg lg:text-xl">{p.title}</div>
+                      <div className="text-[#8c8c8c] text-sm sm:text-lg md:text-lg lg:text-xl">{p.category}</div>
+                    </div>
+                    <div className="border border-[#454545] p-1 pr-4 pl-4 text-[#f1f1f1] text-lg font-light rounded-full">
+                      {p.year}
+                    </div>
+                  </div>
+                </div>
+              ))}
+
+              {/* Mobile Modal */}
+              <AnimatePresence>
+                {isMobile && selectedProject && (
+                  <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-lg"
+                    onClick={() => setSelectedProject(null)}
+                  >
+                    <motion.div
+                      initial={{ scale: 0.8, opacity: 0 }}
+                      animate={{ scale: 1, opacity: 1 }}
+                      exit={{ scale: 0.8, opacity: 0 }}
+                      transition={{ duration: 0.3 }}
+                      className="bg-[#f0f0f0] text-black rounded-2xl p-6 max-w-3xl w-[90%] shadow-2xl relative"
+                      onClick={(e) => e.stopPropagation()}
+                    >
+                      <h2 className="text-2xl font-bold mb-4">
+                        {selectedProject.title}
+                      </h2>
+                      <p className="mb-6">{selectedProject.description}</p>
+
+                      <div className="flex flex-row gap-4">
+                        {selectedProject.repo_link && (
+                          <a
+                            className="px-4 py-2 bg-black text-white rounded-xl hover:bg-gray-900 transition"
+                            href={selectedProject.repo_link}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                          >
+                            Github
+                          </a>
+                        )}
+                        {selectedProject.live_link && (
+                          <a
+                            className="px-4 py-2 bg-black text-white rounded-xl hover:bg-gray-900 transition"
+                            href={selectedProject.live_link[0]}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                          >
+                            {selectedProject.live_link[1]
+                              ? selectedProject.live_link[1]
+                              : "Preview"}
+                          </a>
+                        )}
+                      </div>
+
+                      {/* Close button */}
+                      <button
+                        className="absolute top-4 right-4 text-black hover:text-red-600 text-xl"
+                        onClick={() => setSelectedProject(null)}
+                      >
+                        ✕
+                      </button>
+                    </motion.div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
             </div>
           </Suspense>
         </div>
@@ -365,7 +501,7 @@ export default function Home() {
           >
             <div
               ref={cityRef}
-              className="w-full h-[100vh] flex items-center mb-30 justify-center text-[#f0f0f0] text-2xl font-normal pb-6 grain transition-all duration-1000"
+              className="w-full h-[100vh] flex items-center justify-center text-[#f0f0f0] text-2xl font-normal pb-6 grain transition-all duration-1000"
               style={{
                 backgroundImage: `url(${cityBg})`,
                 backgroundSize: "cover",
@@ -379,17 +515,21 @@ export default function Home() {
         )}
 
         {/* Skills Section */}
-        <div className="w-full min-h-[80vh] flex flex-col md:flex-row justify-between px-4 sm:px-6 md:px-10 lg:py-10 py-40 gap-6 md:gap-10 text-lg sm:text-xl jura-font bg-[#030303] text-[#f0f0f0] cursor-crosshair">
-          <div className="flex flex-col space-y-4 md:w-1/3 items-start">
+        <div className="w-full  min-h-[80vh] flex flex-col md:flex-row justify-between px-4 sm:px-6 md:px-10 lg:py-10 py-40 gap-6 md:gap-10 text-lg sm:text-xl jura-font bg-[#030303] text-[#f0f0f0] cursor-crosshair">
+          <div className="flex flex-col space-y-4 md:w-1/3 lg:items-start md:items-start items-center">
             <div
               ref={skillsTitleRef}
-              className="text-[55px] sm:text-5xl md:text-6xl lg:text-7xl sticky top-20"
+              className="text-[14vw] sm:text-5xl md:text-5xl lg:text-8xl  sticky top-20"
             >
               SKILLS
             </div>
-            <div className="text-2xl sm:text-3xl md:text-4xl sticky top-32 md:top-40 font-normal text-neutral-600">
-              {currentCategory}
-            </div>
+            {!isMobile ? (
+              <div className="text-2xl sm:text-3xl md:text-3xl sticky top-32 md:top-40 lg:top-50 font-normal text-neutral-600">
+                {currentCategory}
+              </div>
+            ) : (
+              <></>
+            )}
           </div>
           <div className="w-full md:w-2/3 flex flex-col space-y-10 md:pl-10">
             {Object.entries(categories).map(([category, skills], index) => (
@@ -404,7 +544,7 @@ export default function Home() {
                   {skills.map((skill) => (
                     <div
                       key={skill}
-                      className="h-16 sm:h-20 w-full border-2 flex items-center justify-center gap-2 border-neutral-800 rounded-3xl hover:rounded-none transition-all duration-500 ease-in-out cursor-pointer text-md sm:text-sm lg:text-xl"
+                      className="h-16 sm:h-20 w-full border-2 flex items-center justify-center gap-2 border-neutral-800 hover:bg-[#0d0d0d] rounded-3xl hover:rounded-none transition-all duration-500 ease-in-out  text-md sm:text-sm lg:text-xl"
                     >
                       {skill}
                     </div>
@@ -419,10 +559,10 @@ export default function Home() {
         </div>
 
         {/* EXPERIENCE Section  SET GROUP HOVERED ON {divs} */}
-        <div className="w-full min-full flex flex-col md:flex-row lg:mb-30 mb-10 justify-between pt-10 pb-20 px-4 sm:px-6 md:px-10 lg:py-10 py-20  gap-6 md:gap-10 text-lg sm:text-xl jura-font cursor-crosshair bg-[#030303] text-[#f0f0f0]">
-          <div className="flex md:w-1/3 lg:w-1/3 w-full items-start">
-            <div className="text-[55px] sm:text-5xl md:text-6xl lg:text-7xl sticky top-20">
-              EXPERIENCE
+        <div className="w-full  min-full flex flex-col md:flex-row justify-between pt-10 pb-20 px-4 sm:px-6 md:px-10 lg:py-10 py-20  gap-6 md:gap-10 text-lg sm:text-xl jura-font cursor-crosshair bg-[#030303] text-[#f0f0f0]">
+          <div className="flex flex-col md:w-1/3 lg:w-1/3 w-full lg:items-start md:items-start items-center">
+            <div className="text-[14vw] sm:text-5xl md:text-5xl lg:text-8xl  sticky top-20">
+              WORK
             </div>
           </div>
           <div className="w-full md:w-2/3 md:pl-10 space-y-10">
@@ -437,11 +577,11 @@ export default function Home() {
                   {exp.place}
                 </div>
                 <div className="flex flex-col items-start w-full space-y-4 text-lg sm:text-lg md:text-xl">
-                  <div className="flex flex-col sm:flex-row justify-between w-full gap-2">
+                  <div className="flex flex-col md:flex-row lg:flex-row justify-between w-full gap-2">
                     <div>{exp.title}</div>
                     <div>{exp.date}</div>
                   </div>
-                  <div className="text-neutral-600 tracking-normal w-full sm:w-5/6">
+                  <div className="text-neutral-600 tracking-normal w-full  lg:w-full md:w-full">
                     {exp.description}
                   </div>
                 </div>
@@ -465,11 +605,11 @@ export default function Home() {
         </Suspense> */}
 
         {/* Contact Section */}
-        <div className="w-full min-h-[80vh] mt-10 mb-20 flex items-center justify-center text-[#f0f0f0] text-lg sm:text-xl font-bold px-4 sm:px-6 md:px-10">
+        <div className="w-full min-h-[80vh]  flex items-center justify-center text-[#f0f0f0] text-lg sm:text-xl font-bold px-4 sm:px-6 md:px-10">
           <div className="flex flex-col justify-center space-y-6 w-full lg:max-w-[80vw]">
-            <h1 className="text-6xl sm:text-5xl md:text-6xl lg:text-7xl leading-tight">
-              LET'S WORK TOGETHER
-            </h1>
+            <div className="flex flex-col items-center w-full text-[15vw] sm:text-6xl md:text-6xl lg:text-7xl leading-tight">
+              <h1>LET'S WORK TOGETHER</h1>
+            </div>
             <div className="w-full flex flex-col gap-4">
               <input
                 type="text"

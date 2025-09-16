@@ -25,7 +25,6 @@ import resume from "./assets/documents/Aditya_Resume.pdf";
 import Glitch1 from "./assets/glitchgif.gif";
 import Glitch2 from "./assets/minimalglitch.gif";
 import WhiteBg from "./assets/WhiteBg2.jpg";
-import Johnny from "./assets/johnny.glb";
 import LoadingBg from "./assets/loading_bg.jpg";
 import logo from "./assets/logo.png";
 import { CgMenuGridO } from "react-icons/cg";
@@ -165,7 +164,7 @@ function App() {
 
       {isLoading ? (
         <motion.div
-          className="text-white w-full min-h-screen flex flex-col justify-center align-middle items-center space-y-10 grain"
+          className="text-white w-full min-h-screen flex flex-col justify-center align-middle items-center space-y-10 grain cursor-crosshair"
           initial={{ background: "#090909" }}
           animate={{ backgroundImage: `url(${LoadingBg})` }}
           transition={{ duration: 1 }}
@@ -178,9 +177,9 @@ function App() {
               setIsLoading(false);
               // setIsPlayerOpen(true);
               setIsPlaying(true);
-              audioRef.current
-                .play()
-                .catch((err) => console.log("Autoplay blocked:", err));
+              // audioRef.current
+              //   .play()
+              //   .catch((err) => console.log("Autoplay blocked:", err));
             }}
             className="relative glitch-button z-30 w-[20vh] py-3 px-6 font-bold uppercase tracking-wider rounded overflow-hidden group transition-all duration-600 cursor-target
              sm:text-sm"
@@ -262,11 +261,11 @@ function App() {
       ) : (
         <div>
           {/* Main Content */}
-          <div className="w-full min-h-screen flex flex-col bg-[#080808] font-sans relative">
+          <div className="w-full min-h-screen flex flex-col bg-[#080808] font-sans relative cursor-crosshair">
             {!isMobile ? (
               <header
                 id="navbar"
-                className="w-full flex items-center justify-center gap-6 p-4 text-white sticky top-0 z-50 bg-black/85 backdrop-blur-lg hover:bg-black/90 transition-colors duration-300 custom-border inset-shadow-sm"
+                className="w-full uppercase flex items-center justify-center gap-6 p-4 text-white sticky top-0 z-50 bg-black/85 backdrop-blur-lg hover:bg-black/90 transition-colors duration-300 custom-border inset-shadow-sm"
               >
                 <div className="flex items-center gap-6 text-sm md:text-base tracking-widest">
                   <Link
@@ -274,14 +273,14 @@ function App() {
                     onClick={() => setMenuItem("Home")}
                     className={`hover:text-red-500 cursor-target ${
                       menuItem === "Home"
-                        ? "text-shadow-lg text-shadow-red-600"
+                        ? "line-through decoration-red-500 hover:decoration-white"
                         : "text-[#f0f0f0]"
                     }`}
                   >
                     Home
                   </Link>
 
-                  <Link
+                  {/* <Link
                     to="/projects"
                     onClick={() => setMenuItem("Projects")}
                     className={`hover:text-red-500 cursor-target ${
@@ -291,21 +290,21 @@ function App() {
                     }`}
                   >
                     Projects
-                  </Link>
+                  </Link> */}
 
                   <Link
                     to="/artworks"
                     onClick={() => setMenuItem("Artworks")}
                     className={`hover:text-red-500 cursor-target ${
                       menuItem === "Artworks"
-                        ? "text-shadow-lg text-shadow-red-600"
+                        ? "line-through decoration-red-500 hover:decoration-white"
                         : "text-[#f0f0f0]"
                     }`}
                   >
                     Artworks
                   </Link>
 
-                  <Link
+                  {/* <Link
                     to="/myspace"
                     onClick={() => setMenuItem("Myspace")}
                     className={`hover:text-red-500 cursor-target ${
@@ -315,7 +314,7 @@ function App() {
                     }`}
                   >
                     MySpace
-                  </Link>
+                  </Link> */}
 
                   <a
                     className="hover:text-red-500 cursor-target"

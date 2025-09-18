@@ -25,6 +25,7 @@ import night from "../assets/cy-city.png";
 import projectsData from "../assets/projects.json";
 import { MdArrowOutward, MdArrowUpward } from "react-icons/md";
 import ScrollToTop from "react-scroll-to-top";
+import { RiCloseLargeFill } from "react-icons/ri";
 
 const JohnnyModel = lazy(() => import("../assets/johnny.glb"));
 
@@ -80,18 +81,34 @@ export default function Home() {
       place: "FREELANCE",
       title: "GRAPHIC DESIGNER",
       description:
-        "Created a range of designs from posters and NFTs to 3D art and animations using Adobe Suite, Blender, and Unreal Engine.",
+        "Created a range of designs including **posters**, **NFTs**, **3D art**, and **animations** using **Adobe Suite**, **Blender**, and **Unreal Engine**.",
       skills: "Adobe Suite, Blender, Unreal Engine",
     },
     {
       date: "FEB 2025 - MAY 2025",
       place: "DRDO, IN",
       title: "DEVELOPER INTERN",
-      description:
-        "Contributed to the development of OIL-AGenT, a real-time testbed for automating On-Board Computer (OBC) software validation in avionics.",
+      description: [
+        "Contributed to the development of **OIL-AGenT**, a real-time testbed framework for automating **On-Board Computer (OBC)** software validation in **avionics**.",
+        "Developed desktop software using **C++**, **Python**, and **PySide6** to design and implement an interactive UI for **scheduling**, **executing**, and **monitoring** simulation runs.",
+        "Assisted in setting up **API endpoints** and database interactions using **Prisma ORM**, **MariaDB**, and **Express.js**.",
+      ],
+
       skills: "Python, PySide6, Prisma DB, C, Express JS",
     },
   ];
+
+  function HighlightedText({ text }) {
+    return text.split(/(\*\*.*?\*\*)/g).map((part, i) =>
+      part.startsWith("**") && part.endsWith("**") ? (
+        <span key={i} className="text-[#797979] font-semibold">
+          {part.replace(/\*\*/g, "")}
+        </span>
+      ) : (
+        part
+      )
+    );
+  }
 
   const modules = import.meta.glob("../assets/artworks/*.{png,jpg,jpeg,svg}", {
     eager: true,
@@ -315,7 +332,7 @@ export default function Home() {
       </div>
 
       {/* Scrollable Content */}
-      <div className="flex flex-col gap-15">
+      <div className="flex flex-col lg:gap-30 mg:gap-25 sm:gap-20 gap-20">
         {/* About me*/}
         <div
           className="w-full h-[50vh] lg:h-[100vh] flex items-center justify-center text-[#f0f0f0] text-2xl font-normal p-6 grain align-middle"
@@ -337,9 +354,9 @@ export default function Home() {
         </div>
 
         {/* Featured Work Section */}
-        <div className="flex flex-col w-full h-full lg:h-full lg:pr-10 lg:pl-10 lg:pb-10 p-0 m-0 items-center justify-center text-[#f0f0f0] bg-[#030303] text-2xl font-bold">
+        <div className="flex flex-col w-full h-full lg:h-full lg:pr-10 lg:pl-10 p-0 m-0 items-center justify-center text-[#f0f0f0] bg-[#030303] text-2xl font-bold">
           <div className="flex flex-col lg:flex-col lg:justify-between justify-between align-middle items-center w-full gap-6">
-            <div className="flex flex-col lg:flex-row md:px-6 sm:px-6 px-6 lg:px-0 text-6xl lg:text-8xl w-full h-full justify-center align-middle items-center lg:items-center">
+            <div className="elements flex flex-col lg:flex-row md:px-6 sm:px-6 px-6 lg:px-0 text-6xl lg:text-8xl w-full h-full justify-center align-middle items-center lg:items-center">
               <div>FEATURED</div> {mobileWidth >= 1026 && <>&nbsp;</>} WORK
             </div>
             {/* {!isMobile ? (
@@ -350,12 +367,19 @@ export default function Home() {
                                   ) : (
                                     <div className="p-0 m-0 h-0 w-0"></div>
                                   )} */}
-            <Link
+            {/* <Link
               to="/projects"
               className="flex  text-white hover:border-red-600 transition-colors duration-300 text-2xl"
             >
               <ShinyText text="VIEW ALL" disabled={false} speed={3} />
-            </Link>
+            </Link> */}
+            <a
+              href="https://github.com/adityasatuluri?tab=repositories"
+              target="_blank"
+              className="elements flex  text-white hover:border-red-600 transition-colors duration-300 text-2xl"
+            >
+              <ShinyText text="VIEW ALL" disabled={false} speed={3} />
+            </a>
           </div>
 
           <Suspense
@@ -369,7 +393,7 @@ export default function Home() {
               {projects.slice(0, 4).map((p, i) => (
                 <div
                   key={p.id}
-                  className="h-[40vh] md:h-[75vh] lg:h-[75vh] w-full sm:m-0 md:mx-5 lg:m-0 border border-neutral-800 rounded-2xl transition-all duration-300 ease-in-out hover:rounded-none cursor-pointer"
+                  className="elements h-[40vh] md:h-[75vh] lg:h-[75vh] w-full sm:m-0 md:mx-5 lg:m-0 border border-neutral-800 rounded-2xl transition-all duration-300 ease-in-out hover:rounded-none cursor-pointer"
                   onClick={() => {
                     if (isMobile) setSelectedProject(p); // only open modal on mobile
                   }}
@@ -417,8 +441,12 @@ export default function Home() {
 
                   <div className="flex flex-row gap-5 items-center justify-between lg:px-6 px-4 bg-[#0c0c0c] h-3/10 lg:h-2/10 rounded-b-2xl transition-all duration-300 ease-in-out hover:rounded-none">
                     <div className="flex flex-col items-start justify-center">
-                      <div className="text-[#f1f1f1] text-lg sm:text-lg md:text-lg lg:text-xl">{p.title}</div>
-                      <div className="text-[#8c8c8c] text-sm sm:text-lg md:text-lg lg:text-xl">{p.category}</div>
+                      <div className="text-[#f1f1f1] text-lg sm:text-lg md:text-lg lg:text-xl">
+                        {p.title}
+                      </div>
+                      <div className="text-[#8c8c8c] text-sm sm:text-lg md:text-lg lg:text-xl">
+                        {p.category}
+                      </div>
                     </div>
                     <div className="border border-[#454545] p-1 pr-4 pl-4 text-[#f1f1f1] text-lg font-light rounded-full">
                       {p.year}
@@ -445,15 +473,30 @@ export default function Home() {
                       className="bg-[#f0f0f0] text-black rounded-2xl p-6 max-w-3xl w-[90%] shadow-2xl relative"
                       onClick={(e) => e.stopPropagation()}
                     >
-                      <h2 className="text-2xl font-bold mb-4">
-                        {selectedProject.title}
-                      </h2>
-                      <p className="mb-6">{selectedProject.description}</p>
+                      <div className="flex flex-col space-y-4">
+                        {/* Header with close button */}
+                        <div className="flex items-center justify-between ">
+                          <h2 className="text-2xl font-bold ">
+                            {selectedProject.title}
+                          </h2>
+                          {/* Close button */}
+                          <button
+                            className=" text-black hover:text-red-600 text-xl cursor-pointer"
+                            onClick={() => setSelectedProject(null)}
+                          >
+                            <RiCloseLargeFill />
+                          </button>
+                        </div>
 
-                      <div className="flex flex-row gap-4">
+                        <p className="mb-6 text-xl">
+                          {selectedProject.description}
+                        </p>
+                      </div>
+
+                      <div className="flex flex-col space-y-4">
                         {selectedProject.repo_link && (
                           <a
-                            className="px-4 py-2 bg-black text-white rounded-xl hover:bg-gray-900 transition"
+                            className="px-4 py-2 bg-black text-white rounded-xl hover:bg-gray-900 transition flex items-center justify-center"
                             href={selectedProject.repo_link}
                             target="_blank"
                             rel="noopener noreferrer"
@@ -463,7 +506,7 @@ export default function Home() {
                         )}
                         {selectedProject.live_link && (
                           <a
-                            className="px-4 py-2 bg-black text-white rounded-xl hover:bg-gray-900 transition"
+                            className="px-4 py-2 bg-black text-white rounded-xl hover:bg-gray-900 transition flex items-center justify-center"
                             href={selectedProject.live_link[0]}
                             target="_blank"
                             rel="noopener noreferrer"
@@ -474,14 +517,6 @@ export default function Home() {
                           </a>
                         )}
                       </div>
-
-                      {/* Close button */}
-                      <button
-                        className="absolute top-4 right-4 text-black hover:text-red-600 text-xl"
-                        onClick={() => setSelectedProject(null)}
-                      >
-                        ✕
-                      </button>
                     </motion.div>
                   </motion.div>
                 )}
@@ -515,7 +550,7 @@ export default function Home() {
         )}
 
         {/* Skills Section */}
-        <div className="w-full  min-h-[80vh] flex flex-col md:flex-row justify-between px-4 sm:px-6 md:px-10 lg:py-10 py-40 gap-6 md:gap-10 text-lg sm:text-xl jura-font bg-[#030303] text-[#f0f0f0] cursor-crosshair">
+        <div className="w-full  min-h-[80vh] flex flex-col md:flex-row justify-between px-4 sm:px-6 md:px-10  gap-6 md:gap-10 text-lg sm:text-xl jura-font bg-[#030303] text-[#f0f0f0] cursor-crosshair">
           <div className="flex flex-col space-y-4 md:w-1/3 lg:items-start md:items-start items-center">
             <div
               ref={skillsTitleRef}
@@ -544,7 +579,7 @@ export default function Home() {
                   {skills.map((skill) => (
                     <div
                       key={skill}
-                      className="h-16 sm:h-20 w-full border-2 flex items-center justify-center gap-2 border-neutral-800 hover:bg-[#0d0d0d] rounded-3xl hover:rounded-none transition-all duration-500 ease-in-out  text-md sm:text-sm lg:text-xl"
+                      className="elements h-16 sm:h-20 w-full border-2 flex items-center justify-center gap-2 border-neutral-800 hover:bg-[#0d0d0d] rounded-3xl hover:rounded-none transition-all duration-500 ease-in-out  text-md sm:text-sm lg:text-xl"
                     >
                       {skill}
                     </div>
@@ -559,7 +594,7 @@ export default function Home() {
         </div>
 
         {/* EXPERIENCE Section  SET GROUP HOVERED ON {divs} */}
-        <div className="w-full  min-full flex flex-col md:flex-row justify-between pt-10 pb-20 px-4 sm:px-6 md:px-10 lg:py-10 py-20  gap-6 md:gap-10 text-lg sm:text-xl jura-font cursor-crosshair bg-[#030303] text-[#f0f0f0]">
+        <div className="w-full flex flex-col md:flex-row justify-between px-4 sm:px-6 md:px-10 gap-6 md:gap-10 text-lg sm:text-xl jura-font cursor-crosshair bg-[#030303] text-[#f0f0f0]">
           <div className="flex flex-col md:w-1/3 lg:w-1/3 w-full lg:items-start md:items-start items-center">
             <div className="text-[14vw] sm:text-5xl md:text-5xl lg:text-8xl  sticky top-20">
               WORK
@@ -568,25 +603,35 @@ export default function Home() {
           <div className="w-full md:w-2/3 md:pl-10 space-y-10">
             {experience.map((exp, index) => (
               <div
-                className="flex flex-col items-start text-sm sm:text-base md:text-lg space-y-6"
+                className="flex flex-col lg:items-start md:items-start sm:items:center items-center  text-sm sm:text-base md:text-lg space-y-6"
                 key={index}
                 onMouseEnter={() => setCurrentSkills(exp.skills)}
                 onMouseLeave={() => setCurrentSkills("")}
               >
-                <div className="text-3xl sm:text-3xl md:text-4xl">
+                <div className="elements text-3xl sm:text-3xl md:text-4xl">
                   {exp.place}
                 </div>
                 <div className="flex flex-col items-start w-full space-y-4 text-lg sm:text-lg md:text-xl">
-                  <div className="flex flex-col md:flex-row lg:flex-row justify-between w-full gap-2">
+                  <div className="elements flex flex-col md:flex-row lg:flex-row lg:items-start md:items-start sm:items:center items-center justify-between w-full gap-2">
                     <div>{exp.title}</div>
                     <div>{exp.date}</div>
                   </div>
-                  <div className="text-neutral-600 tracking-normal w-full  lg:w-full md:w-full">
-                    {exp.description}
+                  <div className="elements text-neutral-600 font-bold tracking-normal w-full lg:items-start md:items-start sm:items:center items-center">
+                    {Array.isArray(exp.description) ? (
+                      <ul className="list-disc pl-5 space-y-1 ">
+                        {exp.description.map((line, i) => (
+                          <li key={i}>
+                            <HighlightedText text={line} />
+                          </li>
+                        ))}
+                      </ul>
+                    ) : (
+                      <HighlightedText text={exp.description} />
+                    )}
                   </div>
                 </div>
                 {index !== experience.length - 1 && (
-                  <hr className="w-full border-neutral-800 mt-5" />
+                  <hr className="elements w-full border-neutral-800 mt-5" />
                 )}
               </div>
             ))}
@@ -605,12 +650,12 @@ export default function Home() {
         </Suspense> */}
 
         {/* Contact Section */}
-        <div className="w-full min-h-[80vh]  flex items-center justify-center text-[#f0f0f0] text-lg sm:text-xl font-bold px-4 sm:px-6 md:px-10">
+        <div className="w-full h-full  flex items-center justify-center text-[#f0f0f0] text-lg sm:text-xl font-bold px-4 sm:px-6 md:px-10">
           <div className="flex flex-col justify-center space-y-6 w-full lg:max-w-[80vw]">
-            <div className="flex flex-col items-center w-full text-[15vw] sm:text-6xl md:text-6xl lg:text-7xl leading-tight">
+            <div className="elements flex flex-col items-center w-full text-[14vw] sm:text-5xl md:text-5xl lg:text-8xl leading-tight">
               <h1>LET'S WORK TOGETHER</h1>
             </div>
-            <div className="w-full flex flex-col gap-4">
+            <div className="elements w-full flex flex-col gap-4">
               <input
                 type="text"
                 placeholder="Name"
@@ -636,18 +681,6 @@ export default function Home() {
         {/* FOOTER */}
         <Footer />
       </div>
-
-      {/* Cursor Circle */}
-      {!isMobile && (
-        <div
-          className="fixed top-0 left-0 w-5 h-5 rounded-full pointer-events-none bg-red-600 mix-blend-difference z-50 transition-transform duration-600 ease-out"
-          style={{
-            transform: `translate(${pos.x - 10}px, ${pos.y - 10}px) scale(${
-              pos.x === 0 && pos.y === 0 ? 0 : hovering ? 13 : 0
-            })`,
-          }}
-        ></div>
-      )}
     </div>
   );
 }

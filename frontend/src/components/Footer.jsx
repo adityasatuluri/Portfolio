@@ -1,7 +1,7 @@
 import React from "react";
 import "../App.css";
 import { MdArrowOutward } from "react-icons/md";
-import { FaInstagram, FaLinkedinIn, FaBehance } from "react-icons/fa";
+import { FaInstagram, FaLinkedinIn, FaBehance, FaGithub } from "react-icons/fa";
 import { TbBrandGmail } from "react-icons/tb";
 
 import LogoBg from "../assets/logo_bg.svg";
@@ -27,7 +27,7 @@ export default function Footer() {
         backgroundImage: `url(${RedBg})`,
       }}
     >
-      <div className="relative flex flex-col items-center justify-center text-center  grain w-full h-[90vh]">
+      <div className="relative flex flex-col items-center justify-center text-center gap-3 grain w-full h-[90vh]">
         {/* Image in background */}
         <img
           src={LogoBg}
@@ -36,7 +36,7 @@ export default function Footer() {
         />
 
         {/* Text in front */}
-        <div className="flex items-center justify-center text-6xl lg:text-9xl tracking-wide relative z-10 lg:mb-0 mb-8">
+        <div className="flex items-center justify-center text-6xl sm:text-5xl md:text-7xl lg:text-9xl tracking-wide relative z-10 lg:mb-0 mb-8">
           ADITYA SATULURI
         </div>
 
@@ -73,6 +73,15 @@ export default function Footer() {
               </a>
               <a
                 className="flex flex-row text-white hover:text-red-600 transition-colors duration-300 cursor-pointer"
+                href="https://www.github.com/adityasatuluri"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <span className="hover:border-b">GITHUB</span>
+                <MdArrowOutward className="h-5 w-5" />
+              </a>
+              <a
+                className="flex flex-row text-white hover:text-red-600 transition-colors duration-300 cursor-pointer"
                 href="mailto:s.aditya.in@gmail.com"
                 target="_blank"
                 rel="noopener noreferrer"
@@ -93,7 +102,7 @@ export default function Footer() {
             )} */}
           </div>
         ) : (
-          <div className="flex flex-row gap-5 justify-between items-center w-full px-12 z-90">
+          <div className="flex flex-row gap-8 justify-center items-center w-full z-90">
             <a
               className="flex flex-row text-white hover:text-red-600 transition-colors duration-300 cursor-pointer"
               href="https://www.linkedin.com/in/aditya-satuluri-a250a31a0/"
@@ -117,6 +126,14 @@ export default function Footer() {
               rel="noopener noreferrer"
             >
               <FaInstagram className="h-8 w-8 object-contain" />
+            </a>
+            <a
+              className="flex flex-row text-white hover:text-red-600 transition-colors duration-300 cursor-pointer"
+              href="https://www.github.com/adityasatuluri"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <FaGithub className="h-8 w-8 object-contain" />
             </a>
             <a
               className="flex flex-row text-white hover:text-red-600 transition-colors duration-300 cursor-pointer"

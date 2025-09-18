@@ -31,7 +31,7 @@
       "year": "2026",
       "image": "aditya.jpg",
       "repo_link": "https://live.example.com/project-one",
-      "live_link": null
+      "live_link": ["https://live.example.com/project-one", "Website"]
     },
     {
       "id": 4,

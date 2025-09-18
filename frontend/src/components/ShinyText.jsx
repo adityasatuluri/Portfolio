@@ -5,14 +5,16 @@ const ShinyText = ({ text, disabled = false, speed = 5, className = "" }) => {
 
   return (
     <div
-      className={`text-[#b5b5b5a4] bg-clip-text inline-block ${className}`}
+      className={`text-[#b5b5b5a4] bg-clip-text inline-block ${className}
+      [text-shadow:0_0_1px_#b5b5b5a4] 
+      hover:[text-shadow:0_0_1px_#ffffff] transition-all duration-300 ease-in-out
+      `}
       style={{
         backgroundImage:
           "linear-gradient(120deg, rgba(255, 255, 255, 0) 40%, rgba(255, 255, 255, 0.8) 50%, rgba(255, 255, 255, 0) 60%)",
         backgroundSize: "200% 100%",
         WebkitBackgroundClip: "text",
         color: "transparent",
-        textShadow: "0 0 1px #b5b5b5a4",
         animation: disabled
           ? "none"
           : `shine ${animationDuration} linear infinite`,

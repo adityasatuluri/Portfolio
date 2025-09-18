@@ -51,14 +51,15 @@ function App() {
   const [menuItem, setMenuItem] = useState("Home");
   const [volume, setVolume] = useState(0.3);
   const [isMobile, setIsMobile] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   // playlist with names
   const playlist = [
     { src: V, name: "V" },
-    // { src: NeverFadeAway, name: "Never Fade Away" },
-    // { src: ParadiseCity, name: "Paradise City" },
-    // { src: ComeAsYouAre, name: "Come As You Are" },
-    // { src: LivinOnAPrayer, name: "Livin' On A Prayer" },
+    { src: NeverFadeAway, name: "Never Fade Away" },
+    { src: ParadiseCity, name: "Paradise City" },
+    { src: ComeAsYouAre, name: "Come As You Are" },
+    { src: LivinOnAPrayer, name: "Livin' On A Prayer" },
   ];
 
   // audio ref
@@ -69,6 +70,14 @@ function App() {
       audioRef.current.volume = volume;
     }
   }, [volume]);
+
+  useEffect(() => {
+    if (mobileMenuOpen) {
+      document.body.style.overflow = "hidden"; // disable scroll
+    } else {
+      document.body.style.overflow = "auto"; // enable scroll again
+    }
+  }, [mobileMenuOpen]);
 
   // auto-update src when track changes
   useEffect(() => {
@@ -93,6 +102,7 @@ function App() {
       if (audio.currentTime >= audio.duration - 0.1) {
         setPlayerIcon("Restart");
         setIsPlaying(false);
+        // nextTrack();
       }
 
       setDuration(audio.duration || 0);
@@ -177,9 +187,9 @@ function App() {
               setIsLoading(false);
               // setIsPlayerOpen(true);
               setIsPlaying(true);
-              // audioRef.current
-              //   .play()
-              //   .catch((err) => console.log("Autoplay blocked:", err));
+              audioRef.current
+                .play()
+                .catch((err) => console.log("Autoplay blocked:", err));
             }}
             className="relative glitch-button z-30 w-[20vh] py-3 px-6 font-bold uppercase tracking-wider rounded overflow-hidden group transition-all duration-600 cursor-target
              sm:text-sm"
@@ -280,9 +290,9 @@ function App() {
                     Home
                   </Link>
 
-                  {/* <Link
-                    to="/projects"
-                    onClick={() => setMenuItem("Projects")}
+                  <a
+                    href="https://github.com/adityasatuluri/?tab=repositories"
+                    target="_blank"
                     className={`hover:text-red-500 cursor-target ${
                       menuItem === "Projects"
                         ? "text-shadow-lg text-shadow-red-600"
@@ -290,7 +300,7 @@ function App() {
                     }`}
                   >
                     Projects
-                  </Link> */}
+                  </a>
 
                   <Link
                     to="/artworks"
@@ -331,14 +341,11 @@ function App() {
                 id="navbar"
                 className="w-full flex items-center justify-between gap-6 p-4 text-white sticky top-0 z-50 bg-black/85 backdrop-blur-lg hover:bg-black/90 transition-colors duration-300 custom-border inset-shadow-sm"
               >
+                {/* Logo */}
                 <Link
                   to="/"
                   onClick={() => setMenuItem("Home")}
-                  className={`hover:text-red-500 cursor-target ${
-                    menuItem === "Home"
-                      ? "text-shadow-lg text-shadow-red-600"
-                      : "text-[#f0f0f0]"
-                  }`}
+                  className="hover:text-red-500 cursor-target"
                 >
                   <img
                     src={logo}
@@ -346,17 +353,97 @@ function App() {
                     className="h-8 w-8 object-contain"
                   />
                 </Link>
-                <Link
-                  to="/"
-                  onClick={() => setMenuItem("Home")}
-                  className={`hover:text-red-500 cursor-target ${
-                    menuItem === "Home"
-                      ? "text-shadow-lg text-shadow-red-600"
-                      : "text-[#f0f0f0]"
-                  }`}
+
+                {/* Menu Toggle */}
+                <button
+                  onClick={() =>
+                    setIsPlayerOpen(false) || setMobileMenuOpen((prev) => !prev)
+                  }
+                  className="hover:text-red-500 cursor-target"
                 >
                   <CgMenuGridO className="h-8 w-8" />
-                </Link>
+                </button>
+
+                {/* Mobile Menu Overlay */}
+                <AnimatePresence>
+                  {mobileMenuOpen && (
+                    <motion.div
+                      initial={{ opacity: 0, y: -20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -20 }}
+                      transition={{ duration: 0.3 }}
+                      className="fixed inset-0 z-50 h-[100vh] bg-[#060606] backdrop-blur-xl flex flex-col items-center justify-center space-y-8 text-2xl font-bold"
+                      style={{
+                        backgroundImage: `url(${WhiteBg})`,
+                        backgroundSize: "cover",
+                      }}
+                    >
+                      {/* Close button */}
+                      <button
+                        className="absolute top-6 right-6 text-white hover:text-red-500 text-3xl"
+                        onClick={() => setMobileMenuOpen(false)}
+                      >
+                        ✕
+                      </button>
+
+                      {/* Nav Links */}
+                      <Link
+                        to="/"
+                        onClick={() => {
+                          setMenuItem("Home");
+                          setMobileMenuOpen(false);
+                        }}
+                        className={`hover:text-red-500 ${
+                          menuItem === "Home"
+                            ? "line-through decoration-red-500"
+                            : ""
+                        }`}
+                      >
+                        Home
+                      </Link>
+
+                      <Link
+                        to="/artworks"
+                        onClick={() => {
+                          setMenuItem("Artworks");
+                          setMobileMenuOpen(false);
+                        }}
+                        className={`hover:text-red-500 ${
+                          menuItem === "Artworks"
+                            ? "line-through decoration-red-500"
+                            : ""
+                        }`}
+                      >
+                        Artworks
+                      </Link>
+
+                      <Link
+                        to="/projects"
+                        onClick={() => {
+                          setMenuItem("Projects");
+                          setMobileMenuOpen(false);
+                        }}
+                        className={`hover:text-red-500 ${
+                          menuItem === "Projects"
+                            ? "line-through decoration-red-500"
+                            : ""
+                        }`}
+                      >
+                        Projects
+                      </Link>
+
+                      <a
+                        href={resume}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        onClick={() => setMobileMenuOpen(false)}
+                        className="hover:text-red-500"
+                      >
+                        Resume
+                      </a>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
               </header>
             )}
 
@@ -419,12 +506,12 @@ function App() {
 
               {/* Controls */}
               <div className="flex items-center gap-4 mt-3 align-middle justify-left flex-row ">
-                {/* <button
+                <button
                   onClick={previousTrack}
                   className="p-2 bg-gray-700 rounded-full hover:bg-gray-600 cursor-target hover:rounded-sm transform transition-all duration-100 transition-ease-in-out"
                 >
                   <SkipBackIcon className="w-5 h-5" />
-                </button> */}
+                </button>
                 {playerIcon === "Pause" ? (
                   <button
                     onClick={togglePlay}
@@ -463,12 +550,12 @@ function App() {
                     className="w-full accent-red-600"
                   />
                 </div>
-                {/* <button
+                <button
                   onClick={nextTrack}
                   className="p-2 bg-gray-700 rounded-full hover:bg-gray-600 cursor-target hover:rounded-sm transform transition-all duration-100 transition-ease-in-out"
                 >
                   <SkipForward className="w-5 h-5" />
-                </button> */}
+                </button>
               </div>
             </motion.div>
           )}

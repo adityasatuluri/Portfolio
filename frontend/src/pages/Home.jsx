@@ -11,8 +11,8 @@ import { Routes, Route, Link, useLocation } from "react-router-dom";
 import BlurText from "../components/Blurtext.jsx";
 import ModelViewer from "../components/ModelViewer.jsx";
 import Johnny from "../assets/johnny.glb";
-import WhiteBg from "../assets/WhiteBg2.jpg";
-import WhiteBgM from "../assets/WhiteBgM.jpg";
+import WhiteBg from "../assets/WhiteBg.webp";
+import WhiteBgM from "../assets/WhiteBgM.webp";
 import ShinyText from "../components/ShinyText.jsx";
 import item2077 from "../assets/item2077.png";
 import GlitchGif from "../assets/verticalglitch.gif";
@@ -404,10 +404,7 @@ export default function Home() {
                   <div
                     className="relative flex items-center justify-center h-7/10 lg:h-8/10 rounded-t-2xl transition-all duration-300 ease-in-out hover:rounded-t-none"
                     style={{
-                      backgroundImage: `url(${new URL(
-                        `../assets/${p.image}`,
-                        import.meta.url
-                      )})`,
+                      backgroundImage: `url(${p.image})`,
                       backgroundSize: "cover",
                       backgroundPosition: "center",
                     }}
@@ -415,7 +412,9 @@ export default function Home() {
                     {/* overlay - desktop hover only */}
                     {!isMobile && (
                       <div className="flex flex-col gap-5 w-full h-full bg-[#f0f0f0]/50 text-[#010101] transition-all duration-300 backdrop-blur-md items-center justify-center opacity-0 hover:opacity-100 rounded-t-2xl hover:rounded-none">
-                        <div>{p.description}</div>
+                        <div className="px-10 flex text-center">
+                          {p.description}
+                        </div>
                         <div className="flex flex-row gap-10">
                           {p.repo_link && (
                             <a

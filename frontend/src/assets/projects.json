@@ -6,7 +6,7 @@
       "category": "UI/UX Design",
       "description": "UI design for a EV charging station finder app",
       "year": "2024",
-      "image": "mockup.jpg",
+      "image": "projects/electrifind.jpg",
       "repo_link": null,
       "live_link": [
         "https://www.behance.net/gallery/200227953/ElectriFind-EV-Charging-Station-Finder-UI-Design",
@@ -15,12 +15,12 @@
     },
     {
       "id": 2,
-      "title": "Project Two",
-      "category": "MERN",
-      "description": "Description for project two.",
+      "title": "Obscura",
+      "category": "AI / Data Privacy",
+      "description": "AI tool that automatically detects and redacts PII in text.",
       "year": "2025",
       "image": "mockup.jpg",
-      "repo_link": null,
+      "repo_link": "https://github.com/adityasatuluri/Obscura",
       "live_link": ["https://live.example.com/project-one", "Website"]
     },
     {
@@ -35,22 +35,22 @@
     },
     {
       "id": 4,
-      "title": "Project Two",
-      "category": "MERN",
-      "description": "Description for project two.",
-      "year": "2025",
-      "image": "mockup.jpg",
-      "repo_link": null,
-      "live_link": ["https://live.example.com/project-one", "Website"]
+      "title": "Flex Chat",
+      "category": "Full Stack (MERN)",
+      "description": "Full-stack chat app with authentication, profiles, and real-time messaging.",
+      "year": "2024",
+      "image": "aditya.jpg",
+      "repo_link": "https://github.com/adityasatuluri/flex-chat",
+      "live_link": null
     },
     {
       "id": 5,
-      "title": "Project Three",
-      "category": "UI/UX Design",
-      "description": "Description for project three.",
+      "title": "Flex Chat",
+      "category": "MERN, JWT, ",
+      "description": "Full-stack chat app with authentication, profiles, and real-time messaging.",
       "year": "2026",
       "image": "aditya.jpg",
-      "repo_link": "https://live.example.com/project-one",
+      "repo_link": "https://github.com/adityasatuluri/flex-chat",
       "live_link": null
     }
   ]

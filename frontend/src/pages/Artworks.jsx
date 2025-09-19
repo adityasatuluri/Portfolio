@@ -30,6 +30,7 @@ function getFileName(path) {
     .split("/")
     .pop()
     .replace(/\.(png|jpe?g|svg|webp)$/i, "")
+    .split(".webp")[0]
     .split("-")[0];
 }
 

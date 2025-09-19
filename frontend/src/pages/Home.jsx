@@ -12,12 +12,14 @@ import BlurText from "../components/Blurtext.jsx";
 import ModelViewer from "../components/ModelViewer.jsx";
 import Johnny from "../assets/johnny.glb";
 import WhiteBg from "../assets/WhiteBg2.jpg";
+import WhiteBgM from "../assets/WhiteBgM.jpg";
 import ShinyText from "../components/ShinyText.jsx";
 import item2077 from "../assets/item2077.png";
 import GlitchGif from "../assets/verticalglitch.gif";
 import { IoIosArrowDown } from "react-icons/io";
 import "../App.css";
 import Inspiration from "../assets/cy-bw.png";
+import Inspiration2 from "../assets/bw2.png";
 import Footer from "../components/Footer.jsx";
 import Mockup from "../assets/mockup.jpg";
 import morning from "../assets/cy-city-morning.png";
@@ -231,7 +233,6 @@ export default function Home() {
       />
       {/* Hero Section */}
       <div className="relative flex flex-col items-center justify-center text-center grain min-h-[50vh] sm:min-h-[90vh] md:min-h-[90vh] lg:min-h-[90vh]">
-        {/* {!isMobile && ( */}
         <div className="absolute inset-0 z-0">
           {/* background at the very back */}
           <div
@@ -239,7 +240,7 @@ export default function Home() {
             style={{
               backgroundImage: !isMobile
                 ? `url(${WhiteBg})`
-                : `url(${WhiteBg})`,
+                : `url(${WhiteBgM})`,
               backgroundSize: !isMobile ? "cover" : "cover",
               backgroundPosition: isMobile ? "top center" : "bottom",
               backgroundAttachment: isMobile ? "fixed" : "fixed",
@@ -337,7 +338,9 @@ export default function Home() {
         <div
           className="w-full h-[50vh] lg:h-[100vh] flex items-center justify-center text-[#f0f0f0] text-2xl font-normal p-6 grain align-middle"
           style={{
-            backgroundImage: `url(${Inspiration})`,
+            backgroundImage: !isMobile
+              ? `url(${Inspiration})`
+              : `url(${Inspiration2})`,
             backgroundSize: "fill",
             backgroundPosition: "center",
             backgroundAttachment: !isMobile ? "fixed" : "fixed",
@@ -586,7 +589,7 @@ export default function Home() {
                   ))}
                 </div>
                 {index < Object.keys(categories).length - 1 && (
-                  <hr className="border-t border-neutral-800 my-4" />
+                  <hr className="border-t mt-10 border-neutral-800" />
                 )}
               </div>
             ))}
@@ -616,13 +619,13 @@ export default function Home() {
                     <div>{exp.title}</div>
                     <div>{exp.date}</div>
                   </div>
-                  <div className="elements text-neutral-600 font-bold tracking-normal w-full lg:items-start md:items-start sm:items:center items-center">
+                  <div className="elements text-neutral-600 text-justify font-bold tracking-normal w-full lg:items-start md:items-start sm:items:center items-center">
                     {Array.isArray(exp.description) ? (
-                      <ul className="list-disc pl-5 space-y-1 ">
+                      <ul className="list-disc space-y-3 ">
                         {exp.description.map((line, i) => (
-                          <li key={i}>
+                          <ul key={i}>
                             <HighlightedText text={line} />
-                          </li>
+                          </ul>
                         ))}
                       </ul>
                     ) : (

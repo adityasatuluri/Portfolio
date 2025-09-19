@@ -1,6 +1,6 @@
 import React from "react";
 import "../App.css";
-import redbg from "../assets/artworks/three.jpg";
+
 import Dock from "../components/Dock";
 import { MdArrowBack } from "react-icons/md";
 import Footer from "../components/Footer";

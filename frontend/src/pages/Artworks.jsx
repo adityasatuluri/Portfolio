@@ -48,15 +48,24 @@ function LazyImage({ src, alt, onClick }) {
       className="relative w-full group overflow-hidden rounded-lg cursor-pointer"
       onClick={onClick}
     >
-      {!loaded && <Shimmer />}
+      {!loaded && (
+        <div className="absolute inset-0 flex items-center justify-center">
+          <Shimmer />
+        </div>
+      )}
       <img
         src={src}
         alt={alt}
         loading="lazy"
-        onLoad={() => setLoaded(true)}
+        onLoad={() => {
+          // delay a bit so shimmer is visible
+          setTimeout(() => setLoaded(true), 400);
+        }}
+        onError={() => setLoaded(true)}
         className={`w-full h-full object-cover block rounded-lg transition-opacity duration-500 ${
-          loaded ? "opacity-100" : "opacity-0 absolute top-0 left-0"
+          loaded ? "opacity-100" : "opacity-0"
         }`}
+        style={{ minHeight: "16rem" }} // matches shimmer height
       />
 
       {/* Hover overlay with gradient */}

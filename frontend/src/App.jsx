@@ -191,7 +191,7 @@ function App() {
                 .play()
                 .catch((err) => console.log("Autoplay blocked:", err));
             }}
-            className="relative glitch-button z-30 w-[20vh] py-3 px-6 font-bold uppercase tracking-wider rounded overflow-hidden group transition-all duration-600 cursor-target
+            className="relative glitch-button z-30 w-[25vh] md:w-[20vh] lg:w-[20vh] py-3 lg:px-6 font-bold uppercase tracking-wider rounded overflow-hidden group transition-all duration-600 cursor-target
              sm:text-sm"
             data-text="ENTER"
           >

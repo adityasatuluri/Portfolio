@@ -21,7 +21,7 @@ import {
 
 // Auto-import all images from artworks folder
 const images = Object.values(
-  import.meta.glob("/public/artworks/*.{png,jpg,jpeg,svg}", { eager: true })
+  import.meta.glob("/public/artworks/*.webp", { eager: true })
 ).map((mod) => mod.default);
 
 // Extract filename from path for label
@@ -29,7 +29,8 @@ function getFileName(path) {
   return path
     .split("/")
     .pop()
-    .replace(/\.(png|jpe?g|svg)$/i, "");
+    .replace(/\.(png|jpe?g|svg|webp)$/i, "")
+    .split("-")[0];
 }
 
 // Shimmer loader component

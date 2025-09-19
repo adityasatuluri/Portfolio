@@ -21,7 +21,7 @@ import {
 
 // Auto-import all images from artworks folder
 const images = Object.values(
-  import.meta.glob("../assets/artworks/*.{png,jpg,jpeg,svg}", { eager: true })
+  import.meta.glob("/public/artworks/*.{png,jpg,jpeg,svg}", { eager: true })
 ).map((mod) => mod.default);
 
 // Extract filename from path for label
@@ -61,7 +61,7 @@ function LazyImage({ src, alt, onClick }) {
 
       {/* Hover overlay with gradient */}
       <div
-        className="absolute bottom-0 left-0 w-full px-3 py-3 text-white text-sm abnes tracking-widest 
+        className="absolute bottom-0 left-0 w-full px-3 py-3 text-white text-lg uppercase tracking-widest 
                 bg-gradient-to-t from-black/80 via-black/40 to-transparent
                 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
       >

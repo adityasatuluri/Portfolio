@@ -1,42 +1,25 @@
 import { useEffect, useRef, useState, lazy, Suspense } from "react";
 import { motion, AnimatePresence, easeInOut } from "framer-motion";
 import { Routes, Route, Link, useLocation } from "react-router-dom";
-import {
-  Database,
-  Music2,
-  Play,
-  Pause,
-  SkipForward,
-  SkipBackIcon,
-  PauseCircleIcon,
-} from "lucide-react";
-import TargetCursor from "./components/TargetCursor.jsx";
+import { Play, Pause, SkipForward, SkipBackIcon } from "lucide-react";
 
 import "./App.css";
 import Home from "./pages/Home.jsx";
-import MySpace from "./pages/Myspace.jsx";
 import Artworks from "./pages/Artworks.jsx";
 import Soft from "./pages/Soft.jsx";
-import Resume from "./pages/Resume.jsx";
 
 // assets
 import cursorSvg from "./assets/cursor.svg";
 import resume from "./assets/documents/Aditya_Resume.pdf";
 import Glitch1 from "./assets/glitchgif.gif";
 import Glitch2 from "./assets/minimalglitch.gif";
-import WhiteBg from "./assets/WhiteBg2.jpg";
-import LoadingBg from "./assets/loading_bg.jpg";
+import WhiteBg from "./assets/WhiteBg.webp";
+import LoadingBg from "./assets/loading_bg.webp";
 import logo from "./assets/logo.png";
 import { CgMenuGridO } from "react-icons/cg";
 
 // songs
-import V from "./assets/sound/V.mp3";
-import RetroWave from "./assets/sound/retrowave.mp3";
-import NeverFadeAway from "./assets/sound/NeverFadeAway.mp3";
-import ParadiseCity from "./assets/sound/paradise_city.mp3";
-import ComeAsYouAre from "./assets/sound/come_as_you_are.mp3";
-import LivinOnAPrayer from "./assets/sound/livin_on_a_prayer.mp3";
-import ModelViewer from "./components/ModelViewer.jsx";
+import V from "./assets/sound/v2.mp3";
 import { MdRestartAlt } from "react-icons/md";
 
 function App() {
@@ -48,19 +31,16 @@ function App() {
   const [progress, setProgress] = useState(0);
   const [duration, setDuration] = useState(0);
   const [playerIcon, setPlayerIcon] = useState("Pause");
-  const [menuItem, setMenuItem] = useState("Home");
+  const [menuItem, setMenuItem] = useState(() => {
+    // Load menuItem from localStorage on initial render
+    return localStorage.getItem("selectedMenuItem") || "Home";
+  });
   const [volume, setVolume] = useState(0.3);
   const [isMobile, setIsMobile] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   // playlist with names
-  const playlist = [
-    { src: V, name: "V" },
-    { src: NeverFadeAway, name: "Never Fade Away" },
-    { src: ParadiseCity, name: "Paradise City" },
-    { src: ComeAsYouAre, name: "Come As You Are" },
-    { src: LivinOnAPrayer, name: "Livin' On A Prayer" },
-  ];
+  const playlist = [{ src: V, name: "V" }];
 
   // audio ref
   const audioRef = useRef(new Audio(playlist[0].src));
@@ -73,9 +53,9 @@ function App() {
 
   useEffect(() => {
     if (mobileMenuOpen) {
-      document.body.style.overflow = "hidden"; // disable scroll
+      document.body.style.overflow = "hidden";
     } else {
-      document.body.style.overflow = "auto"; // enable scroll again
+      document.body.style.overflow = "auto";
     }
   }, [mobileMenuOpen]);
 
@@ -91,7 +71,7 @@ function App() {
 
   // track progress
   useEffect(() => {
-    const checkMobile = () => setIsMobile(window.innerWidth < 768); // md breakpoint
+    const checkMobile = () => setIsMobile(window.innerWidth < 768);
     checkMobile();
     window.addEventListener("resize", checkMobile);
 
@@ -102,9 +82,7 @@ function App() {
       if (audio.currentTime >= audio.duration - 0.1) {
         setPlayerIcon("Restart");
         setIsPlaying(false);
-        // nextTrack();
       }
-
       setDuration(audio.duration || 0);
     };
 
@@ -136,11 +114,9 @@ function App() {
     setIsPlaying(true);
   };
 
-  // next track
+  // previous track
   const previousTrack = () => {
-    setCurrentTrack((prev) => {
-      return (prev - 1 + playlist.length) % playlist.length;
-    });
+    setCurrentTrack((prev) => (prev - 1 + playlist.length) % playlist.length);
     setIsPlaying(true);
   };
 
@@ -161,7 +137,21 @@ function App() {
     return `${minutes}:${seconds}`;
   };
 
-  useEffect(() => {}, [playerIcon]);
+  // Update menuItem in localStorage whenever it changes
+  useEffect(() => {
+    localStorage.setItem("selectedMenuItem", menuItem);
+  }, [menuItem]);
+
+  // Sync menuItem with current route on navigation
+  useEffect(() => {
+    const pathToMenuItem = {
+      "/": "Home",
+      "/artworks": "Artworks",
+      "/projects": "Projects",
+    };
+    const currentMenuItem = pathToMenuItem[location.pathname] || "Home";
+    setMenuItem(currentMenuItem);
+  }, [location.pathname]);
 
   useEffect(() => {
     document.title = "Aditya Satuluri";
@@ -170,8 +160,6 @@ function App() {
 
   return (
     <>
-      {/* <TargetCursor spinDuration={2} hideDefaultCursor={true} /> */}
-
       {isLoading ? (
         <motion.div
           className="text-white w-full min-h-screen flex flex-col justify-center align-middle items-center space-y-10 grain cursor-crosshair"
@@ -185,52 +173,30 @@ function App() {
             transition={{ duration: 0.5, ease: easeInOut }}
             onClick={() => {
               setIsLoading(false);
-              // setIsPlayerOpen(true);
               setIsPlaying(true);
               audioRef.current
                 .play()
                 .catch((err) => console.log("Autoplay blocked:", err));
             }}
-            className="relative glitch-button z-30 w-[25vh] md:w-[20vh] lg:w-[20vh] py-3 lg:px-6 font-bold uppercase tracking-wider rounded overflow-hidden group transition-all duration-600 cursor-target
-             sm:text-sm"
+            className="relative glitch-button z-30 w-[25vh] md:w-[20vh] lg:w-[20vh] py-3 lg:px-6 font-bold uppercase tracking-wider rounded overflow-hidden group transition-all duration-600 cursor-target sm:text-sm"
             data-text="ENTER"
           >
-            {/* Background layers */}
             <div className="absolute inset-0">
-              {/* Image texture layer */}
               <div
                 className="absolute inset-0 opacity-100 bg-cover bg-bottom z-20"
                 style={{ backgroundImage: `url(${WhiteBg})` }}
               />
-              {/* Solid red background */}
               <div className="absolute inset-0 bg-red-600 group-hover:bg-white transition-all duration-600 z-10" />
             </div>
-
-            {/* Text with glitch effect */}
             <span
-              className="relative z-70 text-black abnes group-hover:text-white transform transition-all duration-600"
+              className="relative z-70 abnes text-black group-hover:text-white transform transition-all duration-600"
               data-text="ENTER"
             >
               ENTER
             </span>
-
-            {/* Bottom bar hover effect */}
             <div className="absolute bottom-0 left-0 w-0 h-1.5 bg-white group-hover:w-full transition-all duration-1000 z-80" />
-
-            {/* Gradient shine hover effect */}
             <div className="absolute inset-0 bg-gradient-to-t from-red-400/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
           </motion.button>
-
-          {/* ModelViewer */}
-          {/* <motion.div
-            initial={{ opacity: 0, filter: "blur(10px)" }}
-            animate={{ opacity: 1, filter: "blur(0px)" }}
-            transition={{ duration: 3, ease: easeInOut }}
-            className="w-full h-full absolute inset-0 z-22"
-          >
-            <ModelViewer url={Johnny} width={"100vw"} height={"100vh"} environmentPreset={"night"} />
-          </motion.div> */}
-
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 100 }}
@@ -242,7 +208,6 @@ function App() {
               backgroundAttachment: "fixed",
             }}
           />
-
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 100 }}
@@ -270,7 +235,6 @@ function App() {
         </motion.div>
       ) : (
         <div>
-          {/* Main Content */}
           <div className="w-full min-h-screen flex flex-col bg-[#080808] font-sans relative cursor-crosshair">
             {!isMobile ? (
               <header
@@ -289,10 +253,10 @@ function App() {
                   >
                     Home
                   </Link>
-
                   <a
                     href="https://github.com/adityasatuluri/?tab=repositories"
                     target="_blank"
+                    onClick={() => setMenuItem("Projects")}
                     className={`hover:text-red-500 cursor-target ${
                       menuItem === "Projects"
                         ? "text-shadow-lg text-shadow-red-600"
@@ -301,7 +265,6 @@ function App() {
                   >
                     Projects
                   </a>
-
                   <Link
                     to="/artworks"
                     onClick={() => setMenuItem("Artworks")}
@@ -313,24 +276,12 @@ function App() {
                   >
                     Artworks
                   </Link>
-
-                  {/* <Link
-                    to="/myspace"
-                    onClick={() => setMenuItem("Myspace")}
-                    className={`hover:text-red-500 cursor-target ${
-                      menuItem === "Myspace"
-                        ? "text-shadow-lg text-shadow-red-600"
-                        : "text-[#f0f0f0]"
-                    }`}
-                  >
-                    MySpace
-                  </Link> */}
-
                   <a
                     className="hover:text-red-500 cursor-target"
                     href={resume}
                     target="_blank"
                     rel="noopener noreferrer"
+                    onClick={() => setMenuItem("Resume")}
                   >
                     Resume
                   </a>
@@ -341,7 +292,6 @@ function App() {
                 id="navbar"
                 className="w-full flex items-center justify-between gap-6 p-4 text-white sticky top-0 z-50 bg-black/85 backdrop-blur-lg hover:bg-black/90 transition-colors duration-300 custom-border inset-shadow-sm"
               >
-                {/* Logo */}
                 <Link
                   to="/"
                   onClick={() => setMenuItem("Home")}
@@ -353,8 +303,6 @@ function App() {
                     className="h-8 w-8 object-contain"
                   />
                 </Link>
-
-                {/* Menu Toggle */}
                 <button
                   onClick={() =>
                     setIsPlayerOpen(false) || setMobileMenuOpen((prev) => !prev)
@@ -363,8 +311,6 @@ function App() {
                 >
                   <CgMenuGridO className="h-8 w-8" />
                 </button>
-
-                {/* Mobile Menu Overlay */}
                 <AnimatePresence>
                   {mobileMenuOpen && (
                     <motion.div
@@ -378,15 +324,12 @@ function App() {
                         backgroundSize: "cover",
                       }}
                     >
-                      {/* Close button */}
                       <button
                         className="absolute top-6 right-6 text-white hover:text-red-500 text-3xl"
                         onClick={() => setMobileMenuOpen(false)}
                       >
                         ✕
                       </button>
-
-                      {/* Nav Links */}
                       <Link
                         to="/"
                         onClick={() => {
@@ -395,13 +338,27 @@ function App() {
                         }}
                         className={`hover:text-red-500 ${
                           menuItem === "Home"
-                            ? "line-through decoration-red-500"
+                            ? "line-through decoration-black"
                             : ""
                         }`}
                       >
                         Home
                       </Link>
-
+                      <a
+                        href="https://github.com/adityasatuluri/?tab=repositories"
+                        target="_blank"
+                        onClick={() => {
+                          setMenuItem("Projects");
+                          setMobileMenuOpen(false);
+                        }}
+                        className={`hover:text-red-500 ${
+                          menuItem === "Projects"
+                            ? "line-through decoration-black"
+                            : ""
+                        }`}
+                      >
+                        Projects
+                      </a>
                       <Link
                         to="/artworks"
                         onClick={() => {
@@ -410,33 +367,20 @@ function App() {
                         }}
                         className={`hover:text-red-500 ${
                           menuItem === "Artworks"
-                            ? "line-through decoration-red-500"
+                            ? "line-through decoration-black"
                             : ""
                         }`}
                       >
                         Artworks
                       </Link>
-
-                      <Link
-                        to="/projects"
-                        onClick={() => {
-                          setMenuItem("Projects");
-                          setMobileMenuOpen(false);
-                        }}
-                        className={`hover:text-red-500 ${
-                          menuItem === "Projects"
-                            ? "line-through decoration-red-500"
-                            : ""
-                        }`}
-                      >
-                        Projects
-                      </Link>
-
                       <a
                         href={resume}
                         target="_blank"
                         rel="noopener noreferrer"
-                        onClick={() => setMobileMenuOpen(false)}
+                        onClick={() => {
+                          setMenuItem("Resume");
+                          setMobileMenuOpen(false);
+                        }}
                         className="hover:text-red-500"
                       >
                         Resume
@@ -460,25 +404,12 @@ function App() {
                     <Route path="/" element={<Home />} />
                     <Route path="/projects" element={<Soft />} />
                     <Route path="/artworks" element={<Artworks />} />
-                    <Route path="/myspace" element={<MySpace />} />
-                    <Route path="/resume" element={<Resume />} />
                   </Routes>
                 </motion.div>
               </AnimatePresence>
             </main>
           </div>
 
-          {/* Floating Music Icon */}
-          {/* <div className="fixed bottom-15 right-6 z-50">
-            <button
-              onClick={() => setIsPlayerOpen(!isPlayerOpen)}
-              className="p-4 bg-red-600 mix-blend-luminosity text-white rounded-full shadow-lg hover:bg-red-500  cursor-target hover:rounded-sm transform transition-all duration-100 transition-ease-in-out"
-            >
-              <Music2 className="w-6 h-6" />
-            </button>
-          </div> */}
-
-          {/* Expanded Player */}
           {isPlayerOpen && (
             <motion.div
               initial={{ opacity: 0, y: 50 }}
@@ -489,8 +420,6 @@ function App() {
               <p className="font-mono text-sm mb-2">
                 Now Playing: {playlist[currentTrack].name}
               </p>
-
-              {/* Progress bar */}
               <input
                 type="range"
                 min="0"
@@ -503,9 +432,7 @@ function App() {
                 <span>{formatTime(progress)}</span>
                 <span>{formatTime(duration)}</span>
               </div>
-
-              {/* Controls */}
-              <div className="flex items-center gap-4 mt-3 align-middle justify-left flex-row ">
+              <div className="flex items-center gap-4 mt-3 align-middle justify-left flex-row">
                 <button
                   onClick={previousTrack}
                   className="p-2 bg-gray-700 rounded-full hover:bg-gray-600 cursor-target hover:rounded-sm transform transition-all duration-100 transition-ease-in-out"
@@ -526,18 +453,16 @@ function App() {
                 ) : (
                   <button
                     onClick={() => {
-                      audioRef.current.currentTime = 0; // restart from beginning
+                      audioRef.current.currentTime = 0;
                       audioRef.current.play();
                       setIsPlaying(true);
                       setPlayerIcon("Pause");
                     }}
-                    className="p-2 bg-red-600 rounded-full hover:bg-red-500 ..."
+                    className="p-2 bg-red-600 rounded-full hover:bg-red-500 cursor-target hover:rounded-sm transform transition-all duration-100 transition-ease-in-out"
                   >
                     <MdRestartAlt className="w-5 h-5" />
                   </button>
                 )}
-
-                {/* Volume slider */}
                 <div className="w-30">
                   <label className="text-xs font-mono">Volume</label>
                   <input

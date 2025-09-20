@@ -67,7 +67,7 @@ const GridMotion = ({ items = [], gradientColor = "black" }) => {
   return (
     <div
       ref={gridRef}
-      className="h-[50vh] sm:h-[50vh] lg:h-[100vh] w-full overflow-hidden relative z-0"
+      className="h-[50vh] sm:h-[50vh] lg:h-[100vh] w-full overflow-hidden relative z-0 opacity-70"
     >
       <section
         className="w-full h-full overflow-hidden relative flex items-center justify-center"

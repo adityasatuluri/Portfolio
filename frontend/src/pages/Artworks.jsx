@@ -10,6 +10,7 @@ import Masonry, { ResponsiveMasonry } from "react-responsive-masonry";
 import { motion, AnimatePresence, easeInOut } from "motion/react";
 import Footer from "../components/Footer";
 import "../App.css";
+import bg from "../assets/h.jpg";
 // import GlitchGif from "../assets/verticalglitch.gif";
 // const GlitchBg = lazy(() => import("../assets/verticalglitch.gif"));
 import {
@@ -37,7 +38,7 @@ function getFileName(path) {
 // Shimmer loader component
 function Shimmer() {
   return (
-    <div className="w-full h-64 bg-gray-800 animate-pulse rounded-lg"></div>
+    <div className="w-full h-full bg-gray-800 animate-pulse rounded-lg"></div>
   );
 }
 
@@ -132,6 +133,12 @@ export default function Ux() {
   const handleNext = () =>
     setSelectedIndex((prev) => (prev < images.length - 1 ? prev + 1 : 0));
 
+  const [value, setValue] = useState(0);
+
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, []);
+
   return (
     <div className="flex flex-col lg:gap-30 mg:gap-25 sm:gap-20 gap-20">
       <div className="my-10 mx-10 flex flex-col gap-10">
@@ -139,7 +146,7 @@ export default function Ux() {
           className="text-white w-full h-full p-5 md:p-10 lg:p-10 border-1 border-red-600
                       flex flex-col justify-center items-center gap-5 abnes text-xl sm:text-3xl md:text-5xl lg:text-7xl
                       grain elements"
-          // style={{ backgroundImage: `url(${GlitchBg})` }}
+          style={{ backgroundImage: `url(${bg})` }}
         >
           <motion.p
             initial={{ opacity: 0, filter: "blur(10px)" }}

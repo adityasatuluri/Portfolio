@@ -5,9 +5,8 @@ import { FaInstagram, FaLinkedinIn, FaBehance, FaGithub } from "react-icons/fa";
 import { TbBrandGmail } from "react-icons/tb";
 
 import LogoBg from "../assets/logo_bg.svg";
-import RedBg from "../assets/red-bg.png";
+import RedBg from "../assets/red-bg.webp";
 import { useEffect, useState } from "react";
-import logo from "../assets/logo.png";
 
 export default function Footer() {
   const [isMobile, setIsMobile] = useState(false);

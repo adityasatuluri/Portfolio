@@ -7,29 +7,26 @@ import React, {
   Suspense,
 } from "react";
 import { motion, AnimatePresence, easeInOut } from "motion/react";
-import { Routes, Route, Link, useLocation } from "react-router-dom";
+
 import BlurText from "../components/Blurtext.jsx";
-import ModelViewer from "../components/ModelViewer.jsx";
-import Johnny from "../assets/johnny.glb";
+
 import WhiteBg from "../assets/WhiteBg.webp";
 import WhiteBgM from "../assets/WhiteBgM.webp";
 import ShinyText from "../components/ShinyText.jsx";
 import item2077 from "../assets/item2077.png";
-import GlitchGif from "../assets/verticalglitch.gif";
+import GlitchGif from "../assets/verticalglitchfinal.gif";
 import { IoIosArrowDown } from "react-icons/io";
 import "../App.css";
-import Inspiration from "../assets/cy-bw.png";
-import Inspiration2 from "../assets/bw2.png";
+import Inspiration from "../assets/cy-bw.webp";
+import Inspiration2 from "../assets/bw2.webp";
 import Footer from "../components/Footer.jsx";
-import Mockup from "../assets/mockup.jpg";
-import morning from "../assets/cy-city-morning.png";
-import night from "../assets/cy-city.png";
+import morning from "../assets/cy-city-morning.webp";
+import night from "../assets/cy-city.webp";
 import projectsData from "../assets/projects.json";
-import { MdArrowOutward, MdArrowUpward } from "react-icons/md";
+import { MdArrowUpward } from "react-icons/md";
 import ScrollToTop from "react-scroll-to-top";
 import { RiCloseLargeFill } from "react-icons/ri";
-
-const JohnnyModel = lazy(() => import("../assets/johnny.glb"));
+import Artworks from "../components/Artworks.jsx";
 
 export default function Home() {
   const [pos, setPos] = useState({ x: 0, y: 0 });
@@ -112,7 +109,7 @@ export default function Home() {
     );
   }
 
-  const modules = import.meta.glob("../assets/artworks/*.{png,jpg,jpeg,svg}", {
+  const modules = import.meta.glob("/public/artworks/*.webp", {
     eager: true,
   });
 
@@ -138,46 +135,6 @@ export default function Home() {
   const [currentSkills, setCurrentSkills] = React.useState("");
 
   const projects = projectsData.projects;
-  const divs = [];
-  for (let i = 0; i < 5; i++) {
-    divs.push(
-      <div
-        key={i}
-        className="h-[40vh] lg:h-[75vh]  m-5 lg:m-0 border-1 border-neutral-800 rounded-2xl cursor-target transition-all duration-300 ease-in-out hover:rounded-none"
-      >
-        <div
-          className="relative flex items-center justify-center h-7/10 lg:h-8/10 border-0 rounded-t-2xl transition-all duration-300 ease-in-out"
-          style={{
-            backgroundImage: `url(${Mockup})`,
-            backgroundSize: "cover",
-            backgroundPosition: "center",
-          }}
-          onMouseEnter={() => setHoveredIndex(i)}
-          onMouseLeave={() => setHoveredIndex(null)}
-        >
-          {/* overlay always rendered, opacity animated */}
-
-          <div
-            className={`flex w-full h-full bg-[#f0f0f0]/50 text-[#010101] transition-opacity duration-300 backdrop-blur-md items-center justify-center ${
-              hoveredIndex === i ? "opacity-100" : "opacity-0"
-            }`}
-          >
-            UI design for a EV charging station finder app
-          </div>
-        </div>
-
-        <div className="flex flex-row items-center justify-between lg:px-6 px-4 bg-[#0c0c0c] h-3/10 lg:h-2/10 rounded-b-2xl transition-all duration-300 ease-in-out hover:rounded-none">
-          <div className="flex flex-col items-start justify-center">
-            <div className="text-[#f1f1f1] text-xl">ELECTRIFIND</div>
-            <div className="text-[#8c8c8c] text-lg">UI/UX Design</div>
-          </div>
-          <div className="border-1 border-[#454545] p-1 pr-4 pl-4 text-[#f1f1f1] text-lg font-light rounded-full">
-            2024
-          </div>
-        </div>
-      </div>
-    );
-  }
 
   useEffect(() => {
     const handleScroll = () => {
@@ -281,7 +238,7 @@ export default function Home() {
             style={{
               backgroundImage: `url(${GlitchGif})`,
               backgroundSize: "auto",
-              backgroundPosition: "center",
+              backgroundPosition: "bottom left",
               backgroundAttachment: "fixed",
             }}
           ></div>
@@ -362,20 +319,6 @@ export default function Home() {
             <div className="elements flex flex-col lg:flex-row md:px-6 sm:px-6 px-6 lg:px-0 text-6xl lg:text-8xl w-full h-full justify-center align-middle items-center lg:items-center">
               <div>FEATURED</div> {mobileWidth >= 1026 && <>&nbsp;</>} WORK
             </div>
-            {/* {!isMobile ? (
-                                    <div className="flex font-normal text-2xl justify-end">
-                                      Some text about my featured work (it) could be my most favorite
-                                      works or recent works it depends.
-                                    </div>
-                                  ) : (
-                                    <div className="p-0 m-0 h-0 w-0"></div>
-                                  )} */}
-            {/* <Link
-              to="/projects"
-              className="flex  text-white hover:border-red-600 transition-colors duration-300 text-2xl"
-            >
-              <ShinyText text="VIEW ALL" disabled={false} speed={3} />
-            </Link> */}
             <a
               href="https://github.com/adityasatuluri?tab=repositories"
               target="_blank"
@@ -548,7 +491,7 @@ export default function Home() {
             ></div>
           </Suspense>
         ) : (
-          <></>
+          <Artworks />
         )}
 
         {/* Skills Section */}
@@ -640,16 +583,7 @@ export default function Home() {
           </div>
         </div>
 
-        {/* Filler Image*/}
-        {/* <Suspense
-          fallback={
-            <div className="w-full h-[full] flex items-center justify-center">
-              <div>Loading...</div>
-            </div>
-          }
-        >
-          <GridMotion items={items} />
-        </Suspense> */}
+        {!isMobile ? <Artworks /> : <></>}
 
         {/* Contact Section */}
         <div className="w-full h-full  flex items-center justify-center text-[#f0f0f0] text-lg sm:text-xl font-bold px-4 sm:px-6 md:px-10">

@@ -10,13 +10,11 @@ const Artworks = () => {
   // Load images and set up interval
   useEffect(() => {
     // Dynamically load specific images from /public/artworks/neogaze/
-    const modules = import.meta.glob("/public/artworks/neogaze/*.webp", {
-      eager: true,
-    });
-    const images = Object.keys(modules).map((path) => path);
-    const filteredImages = images.filter((path) =>
-      ["NEOGAZEDARK.webp", "NEOGAZE.webp"].includes(path.split("/").pop())
-    );
+    // const modules = import.meta.glob("/public/artworks/neogaze/*.webp", {
+    //   eager: true,
+    // });
+    // const images = Object.keys(modules).map((path) => path);
+    const filteredImages = ["NEOGAZEDARK.webp", "NEOGAZE.webp"];
     if (filteredImages.length === 2) {
       setArtworkImages(filteredImages);
       let sequenceIndex = 0;

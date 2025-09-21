@@ -19,9 +19,9 @@
       "category": "AI / Data Privacy",
       "description": "AI tool that automatically detects and redacts PII in text.",
       "year": "2025",
-      "image": "mockup.jpg",
+      "image": "projects/obscura.png",
       "repo_link": "https://github.com/adityasatuluri/Obscura",
-      "live_link": ["https://live.example.com/project-one", "Website"]
+      "live_link": null
     },
     {
       "id": 3,

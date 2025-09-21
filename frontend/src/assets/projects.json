@@ -7,6 +7,7 @@
       "description": "UI design for a EV charging station finder app",
       "year": "2024",
       "image": "projects/electrifind.jpg",
+      "skills": ["figma", "ui/ux"],
       "repo_link": null,
       "live_link": [
         "https://www.behance.net/gallery/200227953/ElectriFind-EV-Charging-Station-Finder-UI-Design",
@@ -19,6 +20,7 @@
       "category": "AI / Data Privacy",
       "description": "AI tool that automatically detects and redacts PII in text.",
       "year": "2025",
+      "skills": ["python", "ai/ml", "git"],
       "image": "projects/obscura.png",
       "repo_link": "https://github.com/adityasatuluri/Obscura",
       "live_link": null
@@ -28,8 +30,9 @@
       "title": "Project Three",
       "category": "UI/UX Design",
       "description": "Description for project three.",
-      "year": "2026",
+      "year": "2023",
       "image": "aditya.jpg",
+      "skills": null,
       "repo_link": "https://live.example.com/project-one",
       "live_link": ["https://live.example.com/project-one", "Website"]
     },
@@ -39,7 +42,8 @@
       "category": "Full Stack (MERN)",
       "description": "Full-stack chat app with authentication, profiles, and real-time messaging.",
       "year": "2024",
-      "image": "aditya.jpg",
+      "skills": ["mern", "javascript", "git", "mongodb"],
+      "image": "projects/flexchat.png",
       "repo_link": "https://github.com/adityasatuluri/flex-chat",
       "live_link": null
     },
@@ -48,7 +52,8 @@
       "title": "Flex Chat",
       "category": "MERN, JWT, ",
       "description": "Full-stack chat app with authentication, profiles, and real-time messaging.",
-      "year": "2026",
+      "year": "2023",
+      "skills": null,
       "image": "aditya.jpg",
       "repo_link": "https://github.com/adityasatuluri/flex-chat",
       "live_link": null

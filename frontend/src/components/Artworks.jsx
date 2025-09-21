@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import "../App.css";
+import neogaze from "../../public/NEOGAZEDARK.webp";
+import neogazelit from "../../public/NEOGAZE.webp";
 
 const Artworks = () => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
@@ -14,7 +16,7 @@ const Artworks = () => {
     //   eager: true,
     // });
     // const images = Object.keys(modules).map((path) => path);
-    const filteredImages = ["NEOGAZEDARK.webp", "NEOGAZE.webp"];
+    const filteredImages = [neogaze, neogazelit];
     if (filteredImages.length === 2) {
       setArtworkImages(filteredImages);
       let sequenceIndex = 0;
@@ -49,13 +51,12 @@ const Artworks = () => {
 
   return (
     <div
-      className="w-full h-[50vh] sm:h-[50vh] md:h-[80vh] lg:h-[100vh] text-white relative overflow-hidden z-0"
+      className="w-full h-[50vh] sm:h-[50vh] md:h-[50vh] lg:h-[100vh] text-white relative overflow-hidden z-0"
       style={{
         backgroundImage: `url(${
           isButtonHovered && artworkImages.length > 0
             ? artworkImages[1] // Force NEOGAZE.webp on hover
-            : artworkImages[currentImageIndex] ||
-              "/public/artworks/NEOGAZE.webp"
+            : artworkImages[currentImageIndex] || "/artworks/NEOGAZE.webp"
         })`,
         backgroundSize: "cover",
         backgroundPosition: "center",

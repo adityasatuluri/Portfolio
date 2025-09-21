@@ -22,6 +22,61 @@ import { CgMenuGridO } from "react-icons/cg";
 import V from "./assets/sound/v2.mp3";
 import { MdRestartAlt } from "react-icons/md";
 
+function Credits({ visible, onClose }) {
+  if (!visible) return null;
+  return (
+    <div className="fixed inset-0 z-[5000] flex items-center justify-center w-screen h-screen">
+      <div className="w-full max-w-4xl h-[80vh] max-h-[600px] sm:max-h-[700px] lg:max-h-[800px] rounded-2xl bg-black/80 backdrop-blur-lg p-4 sm:p-6 md:p-8 shadow-2xl overflow-y-auto">
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6">
+          <h2 className="text-white text-2xl sm:text-3xl md:text-4xl font-bold">
+            Credits
+          </h2>
+          <button
+            onClick={onClose}
+            className="text-white text-xl sm:text-2xl md:text-3xl font-light hover:text-red-600 transition-colors duration-300 ease-in-out mt-2 sm:mt-0"
+          >
+            ✕
+          </button>
+        </div>
+        <div className="text-white text-base sm:text-lg md:text-xl space-y-4">
+          <div>
+            <h3 className="font-semibold">Images:</h3>
+            <ul className="list-disc list-inside">
+              <li>Image 1 - Source: [Artist Name/Link]</li>
+              <li>Image 2 - Source: [Artist Name/Link]</li>
+              {/* Add more image credits as needed */}
+            </ul>
+          </div>
+          <div>
+            <h3 className="font-semibold">Music:</h3>
+            <ul className="list-disc list-inside">
+              <li className="pl-5">
+                V - Artist: Marcin Przybyłowicz (
+                <a
+                  href="https://open.spotify.com/track/2u1FWVxAb16qbgwPgygAdj?si=e6849a9411bc4214"
+                  target="_blank"
+                  className="underline hover:text-red-600"
+                >
+                  link
+                </a>
+                )
+              </li>
+              {/* Add more music credits as needed */}
+            </ul>
+          </div>
+          <div>
+            <h3 className="font-semibold">Other Assets:</h3>
+            <ul className="list-disc list-inside">
+              <li>Asset 1 - Source: [Source Name/Link]</li>
+              {/* Add more asset credits as needed */}
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 function App() {
   const location = useLocation();
   const [isLoading, setIsLoading] = useState(true);
@@ -31,6 +86,7 @@ function App() {
   const [progress, setProgress] = useState(0);
   const [duration, setDuration] = useState(0);
   const [playerIcon, setPlayerIcon] = useState("Pause");
+  const [credits, setCredits] = useState(false);
   const [menuItem, setMenuItem] = useState(() => {
     // Load menuItem from localStorage on initial render
     return localStorage.getItem("selectedMenuItem") || "Home";
@@ -158,13 +214,21 @@ function App() {
     document.body.style.cursor = `url(${cursorSvg}) 10 10, auto`;
   }, []);
 
+  useEffect(() => {}, [credits]);
+  const handleClose = () => setCredits(false);
+
   return (
     <>
       {isLoading ? (
         <motion.div
           className="text-white w-full min-h-screen flex flex-col justify-center align-middle items-center space-y-10 grain cursor-crosshair"
           initial={{ background: "#090909" }}
-          animate={{ backgroundImage: `url(${LoadingBg})` }}
+          animate={{
+            backgroundImage: `url(${LoadingBg})`,
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+            backgroundAttachment: "fixed",
+          }}
           transition={{ duration: 1 }}
         >
           <motion.button
@@ -235,12 +299,13 @@ function App() {
         </motion.div>
       ) : (
         <div>
-          <div className="w-full min-h-screen flex flex-col bg-[#080808] font-sans relative cursor-crosshair">
+          <div className="w-full min-h-screen flex flex-col z-1000 bg-[#080808] font-sans relative cursor-crosshair">
             {!isMobile ? (
               <header
                 id="navbar"
                 className="w-full uppercase flex items-center justify-center gap-6 p-4 text-white sticky top-0 z-50 bg-black/85 backdrop-blur-lg hover:bg-black/90 transition-colors duration-300 custom-border inset-shadow-sm"
               >
+                {/*MENU*/}
                 <div className="flex items-center gap-6 text-sm md:text-base tracking-widest">
                   <Link
                     to="/"
@@ -253,7 +318,7 @@ function App() {
                   >
                     Home
                   </Link>
-                  <a
+                  {/* <a
                     href="https://github.com/adityasatuluri/?tab=repositories"
                     target="_blank"
                     onClick={() => setMenuItem("Projects")}
@@ -264,7 +329,20 @@ function App() {
                     }`}
                   >
                     Projects
-                  </a>
+                  </a> */}
+                  <Link
+                    to="/projects"
+                    onClick={() => {
+                      setMenuItem("Projects");
+                    }}
+                    className={`hover:text-red-500 ${
+                      menuItem === "Projects"
+                        ? "line-through decoration-red-500 hover:decoration-white"
+                        : "text-[#f0f0f0]"
+                    }`}
+                  >
+                    Projects
+                  </Link>
                   <Link
                     to="/artworks"
                     onClick={() => setMenuItem("Artworks")}
@@ -285,6 +363,14 @@ function App() {
                   >
                     Resume
                   </a>
+
+                  {/* Credits */}
+                  {/* <div
+                    className="opacity-50 hover:text-red-500 hover:opacity-100 cursor-target"
+                    onClick={() => setCredits(true)}
+                  >
+                    Credits
+                  </div> */}
                 </div>
               </header>
             ) : (
@@ -318,7 +404,7 @@ function App() {
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, y: -20 }}
                       transition={{ duration: 0.3 }}
-                      className="fixed inset-0 z-50 h-[100vh] bg-[#060606] backdrop-blur-xl flex flex-col items-center justify-center space-y-8 text-2xl font-bold"
+                      className="fixed inset-0 h-[100vh] bg-[#060606] backdrop-blur-xl flex flex-col items-center justify-center space-y-8 text-2xl font-bold"
                       style={{
                         backgroundImage: `url(${WhiteBg})`,
                         backgroundSize: "cover",
@@ -344,7 +430,21 @@ function App() {
                       >
                         Home
                       </Link>
-                      <a
+                      <Link
+                        to="/projects"
+                        onClick={() => {
+                          setMenuItem("Projects");
+                          setMobileMenuOpen(false);
+                        }}
+                        className={`hover:text-red-500 ${
+                          menuItem === "Projects"
+                            ? "line-through decoration-red-500"
+                            : ""
+                        }`}
+                      >
+                        Projects
+                      </Link>
+                      {/* <a
                         href="https://github.com/adityasatuluri/?tab=repositories"
                         target="_blank"
                         onClick={() => {
@@ -358,7 +458,7 @@ function App() {
                         }`}
                       >
                         Projects
-                      </a>
+                      </a> */}
                       <Link
                         to="/artworks"
                         onClick={() => {
@@ -390,7 +490,7 @@ function App() {
                 </AnimatePresence>
               </header>
             )}
-
+            <Credits visible={credits} onClose={handleClose} />
             <main className="flex-1 bg-black scrollbar-hide">
               <AnimatePresence mode="wait">
                 <motion.div

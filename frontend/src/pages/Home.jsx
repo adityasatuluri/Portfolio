@@ -6,6 +6,8 @@ import React, {
   lazy,
   Suspense,
 } from "react";
+import { Link } from "react-router-dom";
+
 import { motion, AnimatePresence, easeInOut } from "motion/react";
 
 import BlurText from "../components/Blurtext.jsx";
@@ -116,19 +118,6 @@ export default function Home() {
   // Extract paths
   const artworks = Object.values(modules).map((mod) => mod.default);
 
-  const items = useMemo(() => {
-    const shuffleArray = (arr) => {
-      const copy = [...arr];
-      for (let i = copy.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [copy[i], copy[j]] = [copy[j], copy[i]];
-      }
-      return copy;
-    };
-
-    return shuffleArray(artworks);
-  }, []);
-
   const categoryRefs = useRef([]);
   const skillsTitleRef = useRef(null);
   const [currentCategory, setCurrentCategory] = React.useState("");
@@ -173,6 +162,13 @@ export default function Home() {
     return () => window.removeEventListener("resize", checkMobileWidth);
   }, []);
 
+  const [isTouchDevice, setIsTouchDevice] = useState(false);
+  useEffect(() => {
+    setIsTouchDevice(
+      "maxTouchPoints" in navigator && navigator.maxTouchPoints > 0
+    );
+  }, []);
+
   return (
     <div className="w-full bg-[#030303] relative">
       <ScrollToTop
@@ -186,10 +182,11 @@ export default function Home() {
           justifyContent: "center",
           alignItems: "center",
           boxShadow: "0 4px 6px rgba(0,0,0,0.2)",
+          zIndex: 1000,
         }}
       />
       {/* Hero Section */}
-      <div className="relative flex flex-col items-center justify-center text-center grain min-h-[50vh] sm:min-h-[90vh] md:min-h-[90vh] lg:min-h-[90vh]">
+      <div className="relative flex flex-col items-center justify-center text-center grain min-h-[50vh] sm:min-h-[90vh] md:min-h-[60vh] lg:min-h-[90vh]">
         <div className="absolute inset-0 z-0">
           {/* background at the very back */}
           <div
@@ -199,7 +196,7 @@ export default function Home() {
                 ? `url(${WhiteBg})`
                 : `url(${WhiteBgM})`,
               backgroundSize: !isMobile ? "cover" : "cover",
-              backgroundPosition: isMobile ? "top center" : "bottom",
+              backgroundPosition: isMobile ? "bottom" : "bottom left",
               backgroundAttachment: isMobile ? "fixed" : "fixed",
             }}
           ></div>
@@ -237,7 +234,7 @@ export default function Home() {
             className="absolute inset-0 z-10 w-full h-full mix-blend-screen"
             style={{
               backgroundImage: `url(${GlitchGif})`,
-              backgroundSize: "auto",
+              backgroundSize: "cover",
               backgroundPosition: "bottom left",
               backgroundAttachment: "fixed",
             }}
@@ -246,7 +243,7 @@ export default function Home() {
             className="absolute inset-0 z-10 w-full h-full mix-blend-color-dodge"
             style={{
               backgroundImage: `url(${GlitchGif})`,
-              backgroundSize: "auto",
+              backgroundSize: "cover",
               backgroundPosition: "center",
               backgroundAttachment: "fixed",
             }}
@@ -262,7 +259,7 @@ export default function Home() {
             animate={{ opacity: 1, filter: "blur(0px)" }}
             transition={{ duration: 1, ease: easeInOut }}
             className="mt-10 lg:m-0 text-[#f0f0f0]  abnes font-bold text-shadow-md  leading-tight 
-          text-[7vh] sm:text-[7vh] md:text-[13vh] lg:text-[10vw]"
+          text-[7vh] sm:text-[7vh] md:text-[8vh] lg:text-[10vw]"
           >
             ADITYA
           </motion.h1>
@@ -271,7 +268,7 @@ export default function Home() {
             animate={{ opacity: 1, filter: "blur(0px)" }}
             transition={{ duration: 1.5, ease: easeInOut }}
             className="m-0 text-[#f0f0f0] abnes font-bold text-shadow-md  leading-10 md:leading-20 lg:leading-28 
-          text-[5vh] sm:text-[7vh] md:text-[13vh] lg:text-[10vw] "
+          text-[5vh] sm:text-[7vh] md:text-[6vh] lg:text-[10vw] "
           >
             SATULURI
           </motion.h1>
@@ -316,16 +313,23 @@ export default function Home() {
         {/* Featured Work Section */}
         <div className="flex flex-col w-full h-full lg:h-full lg:pr-10 lg:pl-10 p-0 m-0 items-center justify-center text-[#f0f0f0] bg-[#030303] text-2xl font-bold">
           <div className="flex flex-col lg:flex-col lg:justify-between justify-between align-middle items-center w-full gap-6">
-            <div className="elements flex flex-col lg:flex-row md:px-6 sm:px-6 px-6 lg:px-0 text-6xl lg:text-8xl w-full h-full justify-center align-middle items-center lg:items-center">
-              <div>FEATURED</div> {mobileWidth >= 1026 && <>&nbsp;</>} WORK
+            <div className="elements flex flex-col md:flex-row md:gap-5 lg:gap-5 lg:flex-row md:px-6 sm:px-6 px-6 lg:px-0 text-6xl lg:text-8xl w-full h-full justify-center align-middle items-center lg:items-center">
+              <div>FEATURED</div> <div>WORK</div>
             </div>
-            <a
+            {/* <a
               href="https://github.com/adityasatuluri?tab=repositories"
               target="_blank"
               className="elements flex  text-white hover:border-red-600 transition-colors duration-300 text-2xl"
             >
               <ShinyText text="VIEW ALL" disabled={false} speed={3} />
-            </a>
+            </a> */}
+
+            <Link
+              to="/projects"
+              className="elements flex  text-white hover:border-red-600 transition-colors duration-300 text-2xl"
+            >
+              <ShinyText text="VIEW ALL" disabled={false} speed={3} />
+            </Link>
           </div>
 
           <Suspense
@@ -335,13 +339,13 @@ export default function Home() {
               </div>
             }
           >
-            <div className="grid md:grid-cols-2 lg:grid-cols-2 w-full pt-20 gap-[5vh] justify-center items-center align-middle">
+            <div className="grid md:grid-cols-2 lg:grid-cols-2 w-full pt-20 md:px-5 lg:px-0 gap-[5vh] justify-center items-center align-middle">
               {projects.slice(0, 4).map((p, i) => (
                 <div
                   key={p.id}
-                  className="elements h-[40vh] md:h-[75vh] lg:h-[75vh] w-full sm:m-0 md:mx-5 lg:m-0 border border-neutral-800 rounded-2xl transition-all duration-300 ease-in-out hover:rounded-none cursor-pointer"
+                  className="elements h-[40vh] sm:h-[50vh] md:h-[40vh] lg:h-[75vh] w-full border border-neutral-800 rounded-2xl transition-all duration-300 ease-in-out hover:rounded-none cursor-pointer"
                   onClick={() => {
-                    if (isMobile) setSelectedProject(p); // only open modal on mobile
+                    if (isTouchDevice) setSelectedProject(p); // only open modal on mobile
                   }}
                 >
                   <div
@@ -353,7 +357,7 @@ export default function Home() {
                     }}
                   >
                     {/* overlay - desktop hover only */}
-                    {!isMobile && (
+                    {!isTouchDevice && (
                       <div className="flex flex-col gap-5 w-full h-full bg-[#f0f0f0]/50 text-[#010101] transition-all duration-300 backdrop-blur-md items-center justify-center opacity-0 hover:opacity-100 rounded-t-2xl hover:rounded-none">
                         <div className="px-10 flex text-center">
                           {p.description}
@@ -402,7 +406,7 @@ export default function Home() {
 
               {/* Mobile Modal */}
               <AnimatePresence>
-                {isMobile && selectedProject && (
+                {isTouchDevice && selectedProject && (
                   <motion.div
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
@@ -433,7 +437,7 @@ export default function Home() {
                           </button>
                         </div>
 
-                        <p className="mb-6 text-xl">
+                        <p className="mb-6 text-xl font-normal">
                           {selectedProject.description}
                         </p>
                       </div>
@@ -481,7 +485,7 @@ export default function Home() {
           >
             <div
               ref={cityRef}
-              className="w-full h-[100vh] flex items-center justify-center text-[#f0f0f0] text-2xl font-normal pb-6 grain transition-all duration-1000"
+              className="w-full  lg:h-[100vh] md:h-[50vh] flex items-center justify-center text-[#f0f0f0] text-2xl font-normal pb-6 grain transition-all duration-1000"
               style={{
                 backgroundImage: `url(${cityBg})`,
                 backgroundSize: "cover",
@@ -520,11 +524,11 @@ export default function Home() {
                 onMouseEnter={() => setCurrentCategory(category)}
                 onMouseLeave={() => setCurrentCategory("")}
               >
-                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 font-normal">
+                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-4 gap-4 font-normal">
                   {skills.map((skill) => (
                     <div
                       key={skill}
-                      className="elements h-16 sm:h-20 w-full border-2 flex items-center justify-center gap-2 border-neutral-800 hover:bg-[#0d0d0d] rounded-3xl hover:rounded-none transition-all duration-500 ease-in-out  text-md sm:text-sm lg:text-xl"
+                      className="elements h-16 sm:h-20 w-full border-2 flex items-center align justify-center gap-2 border-neutral-800 hover:bg-[#0d0d0d] rounded-3xl hover:rounded-none transition-all duration-500 ease-in-out  text-md sm:text-sm md:text-sm lg:text-xl"
                     >
                       {skill}
                     </div>
@@ -613,7 +617,6 @@ export default function Home() {
             </div>
           </div>
         </div>
-
         {/* FOOTER */}
         <Footer />
       </div>
